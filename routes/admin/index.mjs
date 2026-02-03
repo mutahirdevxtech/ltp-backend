@@ -5,6 +5,7 @@ import {
     getAdminAnalytics,
     getAllContactUs,
     getBulkUsersController,
+    getCruiseDataController,
     getSingleContactUsController,
     getSingleUserController,
     updateSingleContactUsController,
@@ -17,11 +18,14 @@ const router = Router()
 // analytics
 router.get("/analytics", getAdminAnalytics)
 
+// cruises
+router.get("/cruise-data", getCruiseDataController)
+
 // users
-router.post("/user", multerFileUploadMiddleware.any(), createSingleUserController)
-router.get("/user/:userId", getSingleUserController)
-router.put("/user/:userId", multerFileUploadMiddleware.any(), updateSingleUserController)
-router.get("/users", getBulkUsersController)
+// router.post("/user", multerFileUploadMiddleware.any(), createSingleUserController)
+// router.get("/user/:userId", getSingleUserController)
+// router.put("/user/:userId", multerFileUploadMiddleware.any(), updateSingleUserController)
+// router.get("/users", getBulkUsersController)
 
 // contact us
 router.post("/contact", createContactUsController)

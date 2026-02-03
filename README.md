@@ -1,4 +1,4 @@
-# Loop Travels Plans Backend
+# Luxe Travel Plans Backend
 
 Backend API built using **Express.js** for the BodyRock application.
 

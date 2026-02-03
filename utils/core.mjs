@@ -36,7 +36,7 @@ export const facebookUserApi = "https://graph.facebook.com/v14.0/me?fields=id,fi
 export const profilePicture = "https://res.cloudinary.com/do6sd9nyx/image/upload/v1706343891/we-app-nextjs/Assets/profile-picture_ufgahm.png"
 
 // EMAIL SUBJECTS
-export const welcomeEmailSubject = "Welcome to Loop Travel Plans"
+export const welcomeEmailSubject = "Welcome to Luxe Travel Plans"
 export const emailVerificationSubject = "Email verification OTP"
 export const resetPasswordSubject = "Password Reset OTP"
 export const companyEmail = ""
@@ -53,5 +53,5 @@ export const postmarkEmailTmeplates = {
 }
 
 // CLOUDINARY STORAGE BUCKET FOLDERS
-export const cloudinaryProfilePicturesFolder = "loop-travels-plans/profile-pictures"
+export const cloudinaryProfilePicturesFolder = "luxe-travel-plans/profile-pictures"
 

@@ -28,3 +28,7 @@ export {
     createContactUsController, getAllContactUs, getSingleContactUsController,
     updateSingleContactUsController,
 } from "./contact-us/index.mjs"
+
+export {
+    getCruiseDataController
+} from "./cruise/index.mjs"
