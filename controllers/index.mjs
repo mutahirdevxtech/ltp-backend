@@ -30,5 +30,8 @@ export {
 } from "./contact-us/index.mjs"
 
 export {
-    getCruiseDataController
+    getCruiseDataController,
+    getCruiseDestinationsController,
+    getCruisePortsController,
+    getCruiseStateRoomsController
 } from "./cruise/index.mjs"

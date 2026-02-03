@@ -1,12 +1,18 @@
 import { errorMessages } from "../../../utils/errorMessages.mjs";
-// import { cruiseData } from "../../../data/data.mjs"
+import { cruiseData } from "../../../data/data.mjs"
 
-export const getCruiseDataController = async (req, res, next) => {
+export const getCruiseDestinationsController = async (req, res, next) => {
     try {
+        const data = cruiseData.itinerary.map((i) => {
+            return {
+                name: i?.name,
+                id: i?.portid
+            }
+        })
 
         return res.send({
             message: "cruise data fetched",
-            // data: cruiseData
+            data: data
         })
 
     } catch (error) {

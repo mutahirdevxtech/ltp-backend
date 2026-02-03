@@ -1,4 +1,4 @@
-export const cruiseData = [
+export const cruiseData =
     {
         "shipid": 6677,
         "regions": {
@@ -35732,4 +35732,3 @@ export const cruiseData = [
         "portids": "238,371,369,4940,238",
         "cheapestoutside": "524.59"
     }
-]
