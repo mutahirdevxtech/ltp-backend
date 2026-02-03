@@ -1,0 +1,22 @@
+todo:
+    analytics api
+    get env variables
+
+    redis cache
+    all apis output changed to wanted only
+    postmark
+    mailchimp
+
+working:
+
+schema remaining:
+
+apis remianing:
+
+testing remaining:
+
+backend url = 
+
+V2:
+
+upload image remove from folder
