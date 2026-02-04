@@ -36,14 +36,17 @@ let bookingSchema = new mongoose.Schema({
     travellersAdults: {
         type: Number,
         default: 0,
+        min: 0,
     },
     travellersChildrens: {
         type: Number,
         default: 0,
+        min: 0,
     },
     travellersInfants: {
         type: Number,
         default: 0,
+        min: 0,
     },
     isDeleted: {
         type: Boolean,
@@ -60,17 +63,3 @@ try {
 }
 
 export { bookingModel };
-
-// const schema_data = {
-//     userId: "objectId",
-//     departurePort: "string",
-//     destination: "string",
-//     departureDate: "date",
-//     stateroom: "string",
-//     type: "string",
-//     travellersAdults: "number",
-//     travellersChildrens: "number",
-//     travellersInfants: "number",
-//     timestamp: "date",
-//     isDeleted: "boolean",
-// }
