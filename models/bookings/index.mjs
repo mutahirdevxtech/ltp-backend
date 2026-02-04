@@ -1,78 +1,55 @@
 import mongoose from "mongoose";
-import {
-    emailPattern, phoneNumberPattern,
-    rolesEnum, bookingStatusArray
-} from "../../utils/core.mjs";
 
 // booking schema
 let bookingSchema = new mongoose.Schema({
-    profilePhoto: {
-        type: String,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
         default: null,
-        maxlength: 1000,
+        ref: "users",
     },
-    firstName: {
+    departurePort: {
         type: String,
         required: true,
-        minlength: 2,
-        maxlength: 15,
         trim: true,
         index: true,
     },
-    lastName: {
+    destination: {
         type: String,
         required: true,
-        minlength: 2,
-        maxlength: 15,
         trim: true,
         index: true,
     },
-    email: {
-        type: String,
-        unique: true,
+    departureDate: {
+        type: Date,
         required: true,
-        minlength: 3,
-        maxlength: 100,
+    },
+    stateroom: {
+        type: String,
+        required: true,
         trim: true,
-        match: emailPattern,
-        index: true,
     },
-    password: {
+    type: {
         type: String,
-        default: null,
+        required: true,
+        trim: true,
     },
-    isEmailVerified: {
-        type: Boolean,
-        default: false
+    travellersAdults: {
+        type: Number,
+        default: 0,
     },
-    role: {
-        type: String,
-        enum: rolesEnum,
-        default: "CUSTOMER"
+    travellersChildrens: {
+        type: Number,
+        default: 0,
     },
-    status: {
-        type: String,
-        enum: bookingStatusArray,
-        default: "ACTIVE"
-    },
-    pushNotifications: {
-        type: Boolean,
-        default: true
-    },
-    is2faEnabled: {
-        type: Boolean,
-        default: false
+    travellersInfants: {
+        type: Number,
+        default: 0,
     },
     isDeleted: {
         type: Boolean,
         default: false
     },
 }, { timestamps: true });
-
-bookingSchema.pre('save', function (next) {
-    if (this.email) this.email = this.email.toLowerCase();
-    next();
-});
 
 let bookingModel;
 
@@ -83,3 +60,17 @@ try {
 }
 
 export { bookingModel };
+
+// const schema_data = {
+//     userId: "objectId",
+//     departurePort: "string",
+//     destination: "string",
+//     departureDate: "date",
+//     stateroom: "string",
+//     type: "string",
+//     travellersAdults: "number",
+//     travellersChildrens: "number",
+//     travellersInfants: "number",
+//     timestamp: "date",
+//     isDeleted: "boolean",
+// }

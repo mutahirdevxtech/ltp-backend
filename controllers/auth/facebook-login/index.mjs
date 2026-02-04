@@ -35,6 +35,7 @@ export const facebookLoginController = async (req, res, next) => {
                 firstName: facebookUser?.first_name,
                 lastName: facebookUser?.last_name,
                 email: facebookUser?.email,
+                profilePhoto: facebookUser?.data?.picture?.data?.url || null,
             })
             const { password, ...userData } = newUser?.toObject()
             req.loginTokenPayload = userData

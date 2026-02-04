@@ -36,6 +36,7 @@ export const googleLoginController = async (req, res, next) => {
                 lastName: lastName,
                 email: googleUser?.data?.email,
                 isEmailVerified: true,
+                profilePhoto: googleUser?.data?.picture || null,
             })
             const { password, ...userData } = newUser?.toObject()
             req.loginTokenPayload = userData
