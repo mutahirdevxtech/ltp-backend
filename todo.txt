@@ -10,9 +10,11 @@ todo:
 working:
 
 schema remaining:
+    bookings
 
 apis remianing:
-
+    bookings
+    
 testing remaining:
 
 backend url = 

@@ -30,8 +30,11 @@ export {
 } from "./contact-us/index.mjs"
 
 export {
-    getCruiseDataController,
-    getCruiseDestinationsController,
-    getCruisePortsController,
-    getCruiseStateRoomsController
+    getCruiseDataController, getCruiseDestinationsController,
+    getCruisePortsController, getCruiseStateRoomsController
 } from "./cruise/index.mjs"
+
+export {
+    createBookingController, getBookingsController,
+    getSingleBookingController, updateBookingController
+} from "./bookings/index.mjs"
