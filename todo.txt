@@ -1,6 +1,7 @@
 todo:
     analytics api
-    get env variables
+    create postmark account
+    deploy server
 
     redis cache
     all apis output changed to wanted only

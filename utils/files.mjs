@@ -2,13 +2,14 @@ import fs from "fs"
 
 export const removeLocalFile = (file) => {
     try {
-        if (!file) reject(new Error("file not provided"));
-        fs.unlink(file?.path, (unlinkError) => {
-            if (unlinkError) console.error("error removing local file:", unlinkError);
-        });
-        resolve(response);
+        if (file?.path) {
+            fs.unlink(file.path);
+            return { success: true, message: "file removed successfully" };
+        }else{
+            return { success: true, message: "file removed successfully" };
+        }
     } catch (error) {
-        fs.unlinkSync(file?.path)
-        reject(error)
+        console.error("error removing local file:", error);
+        throw error;
     }
-}
+};
