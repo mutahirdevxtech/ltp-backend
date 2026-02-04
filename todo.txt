@@ -23,3 +23,10 @@ backend url =
 V2:
 
 upload image remove from folder
+
+
+postmark_credentials:
+        fullname: Luxe Travel Plans
+        username: ltp
+        email:    bryan@luxetravelplans.com
+        password: Aqw29308077!!!

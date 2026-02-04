@@ -3,6 +3,7 @@ import { userModel } from "../../../models/index.mjs"
 import { googleUserApi } from "../../../utils/core.mjs";
 import { checkUserStatusUnAuth } from "../../../utils/functions.mjs";
 import axios from "axios";
+import { sendWelcomeEmail } from "../../../libs/postmark.mjs";
 
 export const googleLoginController = async (req, res, next) => {
     try {
@@ -41,6 +42,8 @@ export const googleLoginController = async (req, res, next) => {
             const { password, ...userData } = newUser?.toObject()
             req.loginTokenPayload = userData
             req.source = "GOOGLE"
+
+            await sendWelcomeEmail(googleUser?.data?.email)
             next()
 
         } else {

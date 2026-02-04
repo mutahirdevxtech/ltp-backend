@@ -39,16 +39,14 @@ export const profilePicture = "https://res.cloudinary.com/do6sd9nyx/image/upload
 export const welcomeEmailSubject = "Welcome to Luxe Travel Plans"
 export const emailVerificationSubject = "Email verification OTP"
 export const resetPasswordSubject = "Password Reset OTP"
-export const companyEmail = ""
+export const companyEmail = "bryan@luxetravelplans.com"
 
 // POSTMARK EMAIL TEMPLATES
 export const postmarkEmailTmeplates = {
     emailVerificationTemplate: "",
     forgotPasswordTemplate: "",
-    welcomeTemplate: "",
-    accountSuspendTemplate: "",
-    accountUnSuspendTemplate: "",
-    secureLoginOtpRemplate: "",
+    welcomeTemplate: "43345890",
+    secureLoginOtpTemplate: "",
     accountActivationTemplate: "",
 }
 

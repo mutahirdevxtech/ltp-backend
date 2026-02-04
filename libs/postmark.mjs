@@ -98,13 +98,14 @@ export const sendAccountUnSuspendTemplate = async (email, username) => {
     }
 };
 
-export const sendWelcomeEmail = async (email, username) => {
+export const sendWelcomeEmail = async (email) => {
     try {
-        const templateModel = { username };
+        const templateModel = { };
 
         await client.sendEmailWithTemplate({
             From: companyEmail,
             To: email?.toLowerCase(),
+            // To: "bryan@luxetravelplans.com",
             TemplateId: postmarkEmailTmeplates?.welcomeTemplate,
             TemplateModel: templateModel,
         });
