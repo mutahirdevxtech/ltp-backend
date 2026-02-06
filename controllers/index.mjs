@@ -31,7 +31,7 @@ export {
 
 export {
     getCruiseDataController, getCruiseDestinationsController,
-    getCruisePortsController, getCruiseStateRoomsController
+    getCruisePortsController, getSingleCruiseDataController,
 } from "./cruise/index.mjs"
 
 export {

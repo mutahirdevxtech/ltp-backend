@@ -9,6 +9,7 @@ import { allowedOrigins } from "./utils/core.mjs"
 import { authenticationMiddleware, limiter, rolesRoutesMiddleware } from "./middlewares/index.mjs"
 import { authRoutes, profileRoutes, unAuthRoutes } from "./routes/index.mjs"
 import { activeAccountMiddleware } from "./middlewares/jwt/index.mjs"
+import { cruiseModel } from "./models/index.mjs"
 
 const app = express()
 

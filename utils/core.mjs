@@ -16,7 +16,7 @@ export const initialSessionInDays = 15;
 export const extendedSessionInDays = 30;
 
 // SCHEMA STATUS
-export const userStatusOptions = ["Active","Disabled", "Suspended"]
+export const userStatusOptions = ["Active", "Disabled", "Suspended"]
 export const userStatusArray = userStatusOptions.map((option) => option?.toUpperCase())
 
 // ENUMS
@@ -53,3 +53,4 @@ export const postmarkEmailTmeplates = {
 // CLOUDINARY STORAGE BUCKET FOLDERS
 export const cloudinaryProfilePicturesFolder = "luxe-travel-plans/profile-pictures"
 
+export const cruise_providers = ["SILVERSEA"]
