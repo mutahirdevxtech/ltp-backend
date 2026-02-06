@@ -7,7 +7,8 @@ import { checkUserStatusUnAuth } from "../../utils/functions.mjs"
 
 export const authenticationMiddleware = async (req, res, next) => {
     try {
-        const { hart } = req?.cookies
+        const hart = req?.cookies?.hart || req?.headers?.token
+
         if (!hart) {
             return res.status(401).send({
                 message: errorMessages?.unAuthError
@@ -78,6 +79,7 @@ export const issueLoginToken = async (req, res, next) => {
 
         historyResp.session = hart
         await historyResp.save()
+        req.hart = hart
 
         next()
     } catch (error) {

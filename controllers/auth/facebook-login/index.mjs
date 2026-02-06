@@ -36,6 +36,7 @@ export const facebookLoginController = async (req, res, next) => {
                 lastName: facebookUser?.last_name,
                 email: facebookUser?.email,
                 profilePhoto: facebookUser?.data?.picture?.data?.url || null,
+                isEmailVerified: true
             })
             const { password, ...userData } = newUser?.toObject()
             req.loginTokenPayload = userData
@@ -50,6 +51,9 @@ export const facebookLoginController = async (req, res, next) => {
                     message: message
                 })
             }
+
+            user.isEmailVerified = true
+            await user.save()
 
             const { password, ...userData } = user?.toObject()
             req.loginTokenPayload = userData

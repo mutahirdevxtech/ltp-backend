@@ -13,9 +13,9 @@ import { issueLoginToken } from "../../middlewares/index.mjs"
 const router = Router()
 
 router.post("/signup", signupController)
-router.post("/email-login", emailLoginController, issueLoginToken, (req, res) => res.send({ message: "email login successfull", data: req?.loginTokenPayload }))
-router.post("/google-login", googleLoginController, issueLoginToken, (req, res) => res.send({ message: "google login successfull", data: req?.loginTokenPayload }))
-router.post("/facebook-login", facebookLoginController, issueLoginToken, (req, res) => res.send({ message: "facebook login successfull", data: req?.loginTokenPayload }))
+router.post("/email-login", emailLoginController, issueLoginToken, (req, res) => res.send({ message: "email login successfull", data: { ...req?.loginTokenPayload, token: req?.hart } }))
+router.post("/google-login", googleLoginController, issueLoginToken, (req, res) => res.send({ message: "google login successfull", data: { ...req?.loginTokenPayload, token: req?.hart } }))
+router.post("/facebook-login", facebookLoginController, issueLoginToken, (req, res) => res.send({ message: "facebook login successfull", data: { ...req?.loginTokenPayload, token: req?.hart } }))
 
 router.post("/verify-email-otp", verifyEmailOtpController)
 router.post("/verify-email-complete", verifyEmailCompleteController)
