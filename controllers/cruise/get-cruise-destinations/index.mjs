@@ -4,7 +4,7 @@ export const getCruiseDestinationsController = async (req, res, next) => {
     try {
 
         return res.send({
-            message: "cruise data fetched",
+            message: "cruise destinations fetched",
             data: []
         })
 

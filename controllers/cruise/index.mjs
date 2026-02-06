@@ -1,4 +1,5 @@
 export { getCruiseDataController } from "./get-cruise-data/index.mjs"
+export { getCruiseOriginsController } from "./get-cruise-origins/index.mjs"
 export { getCruiseDestinationsController } from "./get-cruise-destinations/index.mjs"
-export { getCruisePortsController } from "./get-cruise-ports/index.mjs"
+export { getCruiseShipsController } from "./get-cruise-ships/index.mjs"
 export { getSingleCruiseDataController } from "./get-single-cruise/index.mjs"

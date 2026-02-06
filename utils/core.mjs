@@ -53,4 +53,16 @@ export const postmarkEmailTmeplates = {
 // CLOUDINARY STORAGE BUCKET FOLDERS
 export const cloudinaryProfilePicturesFolder = "luxe-travel-plans/profile-pictures"
 
-export const cruise_providers = ["SILVERSEA"]
+export const cruise_providers = [
+    "SILVERSEA",
+    "CRUISINGPOWER",
+    "AZAMARA",
+    "GOCCL",
+    "MSCBOOK",
+    "NCL",
+    "OCEANIA_CRUISES",
+    "REGENT_SEVEN_SEAS",
+    "RITZ_CARLTON_CRUISES",
+    "VIKING_CRUISES",
+    "VIRGIN_CRUISES",
+]

@@ -1,9 +1,10 @@
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 
-export const getCruisePortsController = async (req, res, next) => {
+export const getCruiseOriginsController = async (req, res, next) => {
     try {
+
         return res.send({
-            message: "cruise ports fetched",
+            message: "cruise origins fetched",
             data: []
         })
 

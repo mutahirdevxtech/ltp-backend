@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createContactUsController, getCruiseDataController, getCruiseDestinationsController, getCruisePortsController, getSingleCruiseDataController } from "../../controllers/index.mjs"
+import { createContactUsController, getCruiseDataController, getCruiseDestinationsController, getCruiseOriginsController, getCruiseShipsController, getSingleCruiseDataController } from "../../controllers/index.mjs"
 
 const router = Router()
 
@@ -7,8 +7,11 @@ const router = Router()
 router.post("/contact", createContactUsController)
 
 // cruise data
-router.get("/cruise-ports", getCruisePortsController)
+router.get("/cruise-ships", getCruiseShipsController)
+router.get("/cruise-departures", getCruiseDestinationsController)
+router.get("/cruise-origns", getCruiseOriginsController)
 router.get("/cruise-destinations", getCruiseDestinationsController)
+
 router.get("/cruises", getCruiseDataController)
 router.get("/cruise", getSingleCruiseDataController)
 

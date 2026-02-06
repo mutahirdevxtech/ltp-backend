@@ -1,11 +1,10 @@
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 
-export const getSingleCruiseDataController = async (req, res, next) => {
+export const getCruiseShipsController = async (req, res, next) => {
     try {
-
         return res.send({
-            message: "single cruise data fetched",
-            data: {}
+            message: "cruise ships fetched",
+            data: []
         })
 
     } catch (error) {
