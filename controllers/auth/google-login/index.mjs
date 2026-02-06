@@ -43,7 +43,7 @@ export const googleLoginController = async (req, res, next) => {
             req.loginTokenPayload = userData
             req.source = "GOOGLE"
 
-            await sendWelcomeEmail(googleUser?.data?.email)
+            // await sendWelcomeEmail(googleUser?.data?.email)
             next()
 
         } else {
