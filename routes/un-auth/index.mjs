@@ -8,11 +8,10 @@ router.post("/contact", createContactUsController)
 
 // cruise data
 router.get("/cruise-ships", getCruiseShipsController)
-router.get("/cruise-departures", getCruiseDestinationsController)
-router.get("/cruise-origns", getCruiseOriginsController)
+router.get("/cruise-origins", getCruiseOriginsController)
 router.get("/cruise-destinations", getCruiseDestinationsController)
 
 router.get("/cruises", getCruiseDataController)
-router.get("/cruise", getSingleCruiseDataController)
+router.get("/cruise/:cruiseId", getSingleCruiseDataController)
 
 export default router

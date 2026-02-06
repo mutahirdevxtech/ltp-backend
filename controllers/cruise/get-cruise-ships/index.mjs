@@ -1,11 +1,15 @@
+import { cruiseModel } from "../../../models/index.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 
 export const getCruiseShipsController = async (req, res, next) => {
     try {
+        // sirf unique ship names laa ke dega
+        const ships = await cruiseModel.distinct("ship");
+
         return res.send({
             message: "cruise ships fetched",
-            data: []
-        })
+            data: ships
+        });
 
     } catch (error) {
         console.error(error);
@@ -14,4 +18,4 @@ export const getCruiseShipsController = async (req, res, next) => {
             error: error?.message
         });
     }
-}
+};
