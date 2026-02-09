@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { cruise_providers } from "../../utils/core.mjs"
 
 // booking schema
 let bookingSchema = new mongoose.Schema({
@@ -7,7 +8,18 @@ let bookingSchema = new mongoose.Schema({
         default: null,
         ref: "users",
     },
-    departurePort: {
+    provider: {
+        type: String,
+        enum: cruise_providers,
+        required: true,
+        trim: true,
+    },
+    ship: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    origin: {
         type: String,
         required: true,
         trim: true,

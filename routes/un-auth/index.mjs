@@ -10,7 +10,6 @@ router.post("/contact", createContactUsController)
 router.get("/cruise-ships", getCruiseShipsController)
 router.get("/cruise-origins", getCruiseOriginsController)
 router.get("/cruise-destinations", getCruiseDestinationsController)
-
 router.get("/cruises", getCruiseDataController)
 router.get("/cruise/:cruiseId", getSingleCruiseDataController)
 

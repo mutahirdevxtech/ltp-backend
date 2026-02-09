@@ -13,8 +13,8 @@ export const getBookingsController = async (req, res) => {
             startDepartureDate,
             endDepartureDate,
             q,
-            // isDeleted
-        } = req?.query;
+            provider, // new filter
+        } = req.query;
 
         const query = { isDeleted: false };
 
@@ -46,16 +46,26 @@ export const getBookingsController = async (req, res) => {
         }
 
         // ------------------------------
-        // Search Filter
+        // Provider Filter
+        // ------------------------------
+        if (provider) {
+            query.provider = provider;
+        }
+
+        // ------------------------------
+        // Search Filter → origin / destination
         // ------------------------------
         if (q) {
             const regex = new RegExp(escapeRegExp(q), "i");
             query.$or = [
-                { departurePort: regex },
+                { origin: regex },
                 { destination: regex },
             ];
         }
 
+        // ------------------------------
+        // Fetch bookings
+        // ------------------------------
         const resp = await bookingModel
             .find(query)
             .sort({ _id: -1 })
