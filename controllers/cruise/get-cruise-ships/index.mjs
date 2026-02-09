@@ -3,9 +3,11 @@ import { errorMessages } from "../../../utils/errorMessages.mjs";
 
 export const getCruiseShipsController = async (req, res, next) => {
     try {
-        // sirf unique ship names laa ke dega
-        const ships = await cruiseModel.distinct("ship");
+        const { provider } = req?.query
 
+        let filter = {};
+        if (provider) filter.provider = provider.toUpperCase()
+        const ships = await cruiseModel.distinct("ship", filter);
         return res.send({
             message: "cruise ships fetched",
             data: ships
