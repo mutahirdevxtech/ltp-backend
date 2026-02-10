@@ -1,1 +1,2 @@
-export { getSingleCruiseData } from "./silversea/get-single-cruise-data-from-silversea.mjs"
+export { getSingleCruiseDataSilverSea } from "./silversea/index.mjs"
+export { getSingleCruiseDataAzamara } from "./azamara/index.mjs"

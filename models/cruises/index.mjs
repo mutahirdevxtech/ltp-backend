@@ -40,6 +40,10 @@ let cruiseSchema = new mongoose.Schema({
         enum: cruise_providers,
         default: cruise_providers[0]
     },
+    objectId: {
+        type: String,
+        default: null,
+    }
 }, { timestamps: true });
 
 let cruiseModel;

@@ -5,15 +5,22 @@ export const getCruiseOriginsController = async (req, res, next) => {
     try {
         const { ship } = req.query;
 
-        if (!ship) {
-            return res.status(400).send({
-                message: "ship is required in query"
-            });
+        // if (!ship) {
+        //     return res.status(400).send({
+        //         message: "ship is required in query"
+        //     });
+        // }
+
+
+        const query = {}
+
+        if (ship) {
+            query.ship = ship
         }
 
         // ship ke saare titles nikaal lo
         const cruises = await cruiseModel.find(
-            { ship },
+            query,
             { title: 1, _id: 0 }
         );
 

@@ -5,15 +5,15 @@ export const getCruiseDestinationsController = async (req, res, next) => {
     try {
         const { ship, origin } = req.query;
 
-        if (!ship || !origin) {
-            return res.status(400).send({
-                message: "ship and origin are required in query"
-            });
+        // build dynamic query
+        const query = {};
+        if (ship) {
+            query.ship = ship;
         }
 
-        // ship ke cruises nikaal lo
+        // sirf title chahiye
         const cruises = await cruiseModel.find(
-            { ship },
+            query,
             { title: 1, _id: 0 }
         );
 
@@ -23,7 +23,13 @@ export const getCruiseDestinationsController = async (req, res, next) => {
             if (c.title && c.title.includes(" to ")) {
                 const [from, to] = c.title.split(" to ").map(s => s.trim());
 
-                if (from === origin) {
+                // agar origin diya hua hai → match karo
+                if (origin) {
+                    if (from === origin) {
+                        destinationsSet.add(to);
+                    }
+                } else {
+                    // agar origin nahi diya → sab "to" add kar do
                     destinationsSet.add(to);
                 }
             }

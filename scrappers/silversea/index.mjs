@@ -74,7 +74,7 @@ function extractCruiseInfo(html) {
  * @param {string} cruiseURL 
  * @returns {Promise<Object>} Cruise data JSON
  */
-async function getSingleCruiseData(cruiseURL) {
+async function getSingleCruiseDataSilverSea(cruiseURL) {
     try {
         const html = await fetchHTML(cruiseURL);
         const data = extractCruiseInfo(html);
@@ -86,4 +86,4 @@ async function getSingleCruiseData(cruiseURL) {
 }
 
 
-export { getSingleCruiseData }
+export { getSingleCruiseDataSilverSea }
