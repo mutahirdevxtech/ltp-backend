@@ -13,6 +13,8 @@ export const getCruiseDataController = async (req, res, next) => {
             origin,
             destination,
             price,
+            page = 1,      // 👈 default page
+            limit = 10     // 👈 default limit
             // title
         } = req.query;
 
@@ -43,8 +45,16 @@ export const getCruiseDataController = async (req, res, next) => {
             if (endDateTo) filter.endDate.$lte = new Date(endDateTo);
         }
 
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+        const skip = (pageNum - 1) * limitNum;
+
+        const total = await cruiseModel.countDocuments(filter);
+
         // fetch from DB
-        let cruises = await cruiseModel.find(filter).sort({ startDate: 1 });
+        let cruises = await cruiseModel.find(filter).sort({ startDate: 1 })
+            .skip(skip)
+            .limit(limitNum);
 
         // origin / destination filtering (title se nikaal ke)
         if (origin || destination) {
@@ -62,6 +72,10 @@ export const getCruiseDataController = async (req, res, next) => {
 
         return res.send({
             message: "cruise data fetched",
+            page: pageNum,
+            limit: limitNum,
+            total,
+            totalPages: Math.ceil(total / limitNum),
             count: cruises.length,
             data: cruises
         });
