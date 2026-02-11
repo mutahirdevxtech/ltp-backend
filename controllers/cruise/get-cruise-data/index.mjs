@@ -13,9 +13,8 @@ export const getCruiseDataController = async (req, res, next) => {
             origin,
             destination,
             price,
-            page = 1,      // 👈 default page
-            limit = 10     // 👈 default limit
-            // title
+            page = 1,
+            limit = 10
         } = req.query;
 
         const filter = {};
@@ -23,14 +22,7 @@ export const getCruiseDataController = async (req, res, next) => {
         // simple string filters
         if (provider) filter.provider = provider;
         if (ship) filter.ship = ship;
-
-        // if (title) {
-        //     filter.title = { $regex: title, $options: "i" }; // case-insensitive search
-        // }
-
-        if (price) {
-            filter.price = { $regex: price, $options: "i" };
-        }
+        if (price) filter.price = { $regex: price, $options: "i" };
 
         // date range filters
         if (startDateFrom || startDateTo) {
@@ -45,30 +37,33 @@ export const getCruiseDataController = async (req, res, next) => {
             if (endDateTo) filter.endDate.$lte = new Date(endDateTo);
         }
 
+        // origin/destination DB-level regex filter
+        if (origin || destination) {
+            const originPattern = origin ? origin.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : ''; // escape regex
+            const destPattern = destination ? destination.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
+
+            if (origin && destination) {
+                filter.title = { $regex: new RegExp(`^.*${originPattern}.* to .*${destPattern}.*$`, 'i') };
+            } else if (origin) {
+                filter.title = { $regex: new RegExp(`^.*${originPattern}.* to .*`, 'i') };
+            } else if (destination) {
+                filter.title = { $regex: new RegExp(`^.* to .*${destPattern}.*$`, 'i') };
+            }
+        }
+
         const pageNum = parseInt(page);
         const limitNum = parseInt(limit);
         const skip = (pageNum - 1) * limitNum;
 
+        // total count after DB filter
         const total = await cruiseModel.countDocuments(filter);
 
-        // fetch from DB
-        let cruises = await cruiseModel.find(filter).sort({ startDate: 1 })
+        // fetch from DB with pagination
+        const cruises = await cruiseModel
+            .find(filter)
+            .sort({ startDate: 1 })
             .skip(skip)
             .limit(limitNum);
-
-        // origin / destination filtering (title se nikaal ke)
-        if (origin || destination) {
-            cruises = cruises.filter(c => {
-                if (!c.title || !c.title.includes(" to ")) return false;
-
-                const [from, to] = c.title.split(" to ").map(s => s.trim());
-
-                if (origin && from !== origin) return false;
-                if (destination && to !== destination) return false;
-
-                return true;
-            });
-        }
 
         return res.send({
             message: "cruise data fetched",
