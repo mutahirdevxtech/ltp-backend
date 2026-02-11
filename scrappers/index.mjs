@@ -1,2 +1,1 @@
-export { getSingleCruiseDataSilverSea } from "./silversea/index.mjs"
-export { getSingleCruiseDataAzamara } from "./azamara/index.mjs"
+export { getSingleCruiseDataAzamara, getSingleCruiseDataSilverSea } from "./single/index.mjs"

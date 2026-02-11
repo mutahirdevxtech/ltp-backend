@@ -3,6 +3,7 @@ import "./libs/db.mjs"
 import express, { json } from "express"
 import morgan from "morgan"
 import cors from "cors"
+import http from "http"
 import cookieParser from "cookie-parser"
 
 import { allowedOrigins } from "./utils/core.mjs"
@@ -31,6 +32,8 @@ app.use(morgan("dev"))
 app.use(json())
 app.use(cookieParser())
 
+const startPort = Number(process.env.PORT) || 5002;
+
 app.get("/", (req, res) => res.send("Hello from developer"))
 app.use("/api/v1", authRoutes, unAuthRoutes, authenticationMiddleware, profileRoutes, activeAccountMiddleware, rolesRoutesMiddleware)
 
@@ -53,5 +56,23 @@ app.get("/operation", async (req, res) => {
 
 
 // PORT LISTENING
-const PORT = process.env.PORT || 5002
-app.listen(PORT, () => console.log(`server running on port ${PORT}`))
+// const PORT = process.env.PORT || 5002 || 5003
+// app.listen(PORT, () => console.log(`server running on port ${PORT}`))
+function startServer(port) {
+    const server = http.createServer(app);
+
+    server.listen(port, () => {
+        console.log(`✅ Server running on port ${port}`);
+    });
+
+    server.on("error", (err) => {
+        if (err.code === "EADDRINUSE") {
+            console.log(`⚠️ Port ${port} is busy, trying ${port + 1}...`);
+            startServer(port + 1);
+        } else {
+            console.error("❌ Server error:", err);
+        }
+    });
+}
+
+startServer(startPort);
