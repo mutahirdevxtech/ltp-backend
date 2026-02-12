@@ -59,7 +59,7 @@ app.get("/operation", async (req, res) => {
 // const PORT = process.env.PORT || 5002 || 5003
 // app.listen(PORT, () => console.log(`server running on port ${PORT}`))
 function startServer(port) {
-    const server = http.createServer(app);
+   const server = http.createServer({ maxHeaderSize: 32 * 1024 }, app);
 
     server.listen(port, () => {
         console.log(`✅ Server running on port ${port}`);
