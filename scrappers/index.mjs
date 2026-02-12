@@ -1,4 +1,4 @@
 export {
     getSingleCruiseDataAzamara, getSingleCruiseDataSilverSea,
-    getSingleCruiseDataNCL,
+    getSingleCruiseDataNCL, getSingleCruiseDataRegent,
 } from "./single/index.mjs"

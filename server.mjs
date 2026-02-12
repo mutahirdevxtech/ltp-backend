@@ -64,7 +64,6 @@ app.get("/operation", async (req, res) => {
     res.send("query executed")
 })
 
-
 // PORT LISTENING
 // const PORT = process.env.PORT || 5002 || 5003
 // app.listen(PORT, () => console.log(`server running on port ${PORT}`))
