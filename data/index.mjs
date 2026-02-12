@@ -1,3 +1,4 @@
 export { silversea_cruises } from "./silversea.mjs"
 export { azamara_cruises } from "./azamara.mjs"
 export { ncl_cruises } from "./ncl.mjs"
+export { regent_sevensea_cruises } from "./regent-sevensea.mjs"

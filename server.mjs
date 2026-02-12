@@ -11,7 +11,7 @@ import { authenticationMiddleware, limiter, rolesRoutesMiddleware } from "./midd
 import { authRoutes, profileRoutes, unAuthRoutes } from "./routes/index.mjs"
 import { activeAccountMiddleware } from "./middlewares/jwt/index.mjs"
 import { cruiseModel } from "./models/index.mjs"
-import { azamara_cruises, ncl_cruises, silversea_cruises } from "./data/index.mjs"
+import { azamara_cruises, ncl_cruises, regent_sevensea_cruises, silversea_cruises } from "./data/index.mjs"
 
 const app = express()
 
@@ -52,6 +52,11 @@ app.get("/add-azamara-data-by-dev", async (req, res) => {
 app.get("/add-ncl-data-by-dev", async (req, res) => {
     // await cruiseModel.create(ncl_cruises)
     res.send("ncl cruise data added")
+})
+
+app.get("/add-regent-sevensea-data-by-dev", async (req, res) => {
+    // await cruiseModel.create(regent_sevensea_cruises)
+    res.send("regent sevensea cruise data added")
 })
 
 app.get("/operation", async (req, res) => {
