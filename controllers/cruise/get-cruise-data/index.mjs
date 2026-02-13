@@ -63,22 +63,20 @@ export const getCruiseDataController = async (req, res, next) => {
             .skip(skip)
             .limit(limitNum);
 
-        // If no cruises found, fetch nearest dates
-        if (total === 0 && (startDateFrom || startDateTo)) {
-            const nearestDateFilter = { ...filter };
-            delete nearestDateFilter.startDate; // remove original date filter
+        // If no cruises found, fetch next upcoming cruises only
+        if (total === 0 && startDateFrom) {
+            const nextCruiseFilter = { ...filter, startDate: { $gte: new Date(startDateFrom) } };
 
-            // Find the nearest cruise by startDate
             cruises = await cruiseModel
-                .find(nearestDateFilter)
-                .sort({ startDate: 1 }) // ascending order
+                .find(nextCruiseFilter)
+                .sort({ startDate: 1 }) // earliest upcoming first
                 .limit(limitNum);
 
             total = cruises.length;
         }
 
         return res.send({
-            message: total === 0 ? "No cruises found for given date, showing nearest available" : "Cruise data fetched",
+            message: total === 0 ? "No cruises found for given date, showing next available cruises" : "Cruise data fetched",
             page: pageNum,
             limit: limitNum,
             total,
