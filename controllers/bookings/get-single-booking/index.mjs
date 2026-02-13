@@ -1,5 +1,5 @@
 import { errorMessages } from "../../../utils/errorMessages.mjs";
-import { bookingModel } from "../../../models/index.mjs";
+import { bookingModel, cruiseModel } from "../../../models/index.mjs";
 import { isValidObjectId } from "mongoose";
 
 export const getSingleBookingController = async (req, res) => {
@@ -26,9 +26,15 @@ export const getSingleBookingController = async (req, res) => {
             });
         }
 
+        let cruise = null
+        if (booking?.cruiseLink) {
+            const existing_cruise = await cruiseModel.findOne({ link: booking.cruiseLink }).lean().exec()
+            cruise = existing_cruise
+        }
+
         return res.send({
             message: "booking fetched successfully",
-            data: booking,
+            data: { ...booking, cruise },
         });
 
     } catch (error) {
