@@ -39,7 +39,7 @@ export const getCruiseDataController = async (req, res, next) => {
 
         // origin/destination DB-level regex filter
         if (origin || destination) {
-            const originPattern = origin ? origin.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : ''; // escape regex
+            const originPattern = origin ? origin.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
             const destPattern = destination ? destination.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
 
             if (origin && destination) {
@@ -56,17 +56,29 @@ export const getCruiseDataController = async (req, res, next) => {
         const skip = (pageNum - 1) * limitNum;
 
         // total count after DB filter
-        const total = await cruiseModel.countDocuments(filter);
-
-        // fetch from DB with pagination
-        const cruises = await cruiseModel
+        let total = await cruiseModel.countDocuments(filter);
+        let cruises = await cruiseModel
             .find(filter)
             .sort({ startDate: 1 })
             .skip(skip)
             .limit(limitNum);
 
+        // If no cruises found, fetch nearest dates
+        if (total === 0 && (startDateFrom || startDateTo)) {
+            const nearestDateFilter = { ...filter };
+            delete nearestDateFilter.startDate; // remove original date filter
+
+            // Find the nearest cruise by startDate
+            cruises = await cruiseModel
+                .find(nearestDateFilter)
+                .sort({ startDate: 1 }) // ascending order
+                .limit(limitNum);
+
+            total = cruises.length;
+        }
+
         return res.send({
-            message: "cruise data fetched",
+            message: total === 0 ? "No cruises found for given date, showing nearest available" : "Cruise data fetched",
             page: pageNum,
             limit: limitNum,
             total,
