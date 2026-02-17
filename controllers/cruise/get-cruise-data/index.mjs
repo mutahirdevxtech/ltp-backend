@@ -21,7 +21,8 @@ export const getCruiseDataController = async (req, res, next) => {
 
         // simple string filters
         if (provider) filter.provider = provider;
-        if (ship) filter.ship = ship;
+        // if (ship) filter.ship = ship;
+        if (ship) filter.ship = { $in: [ship] };
         if (price) filter.price = { $regex: price, $options: "i" };
 
         // date range filters

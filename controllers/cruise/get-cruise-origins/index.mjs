@@ -5,26 +5,20 @@ export const getCruiseOriginsController = async (req, res, next) => {
     try {
         const { ship } = req.query;
 
-        // if (!ship) {
-        //     return res.status(400).send({
-        //         message: "ship is required in query"
-        //     });
-        // }
-
-
-        const query = {}
+        const query = {};
 
         if (ship) {
-            query.ship = ship
+            // match if the ship array contains the string from frontend
+            query.ship = { $in: [ship] };
         }
 
-        // ship ke saare titles nikaal lo
+        // fetch all cruise titles that match the ship
         const cruises = await cruiseModel.find(
             query,
             { title: 1, _id: 0 }
         );
 
-        // "A to B" se A (origin) nikaal ke unique bana do
+        // extract unique origins from "A to B" titles
         const originsSet = new Set();
 
         cruises.forEach(c => {
@@ -37,7 +31,7 @@ export const getCruiseOriginsController = async (req, res, next) => {
         const origins = Array.from(originsSet);
 
         return res.send({
-            message: "cruise origins fetched",
+            message: "Cruise origins fetched",
             data: origins
         });
 

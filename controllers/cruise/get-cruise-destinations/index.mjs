@@ -8,10 +8,11 @@ export const getCruiseDestinationsController = async (req, res, next) => {
         // build dynamic query
         const query = {};
         if (ship) {
-            query.ship = ship;
+            // match if the ship array contains the string from frontend
+            query.ship = { $in: [ship] };
         }
 
-        // sirf title chahiye
+        // only need titles
         const cruises = await cruiseModel.find(
             query,
             { title: 1, _id: 0 }
@@ -23,13 +24,13 @@ export const getCruiseDestinationsController = async (req, res, next) => {
             if (c.title && c.title.includes(" to ")) {
                 const [from, to] = c.title.split(" to ").map(s => s.trim());
 
-                // agar origin diya hua hai → match karo
+                // if origin is given → match
                 if (origin) {
                     if (from === origin) {
                         destinationsSet.add(to);
                     }
                 } else {
-                    // agar origin nahi diya → sab "to" add kar do
+                    // if no origin → add all destinations
                     destinationsSet.add(to);
                 }
             }
@@ -38,7 +39,7 @@ export const getCruiseDestinationsController = async (req, res, next) => {
         const destinations = Array.from(destinationsSet);
 
         return res.send({
-            message: "cruise destinations fetched",
+            message: "Cruise destinations fetched",
             data: destinations
         });
 

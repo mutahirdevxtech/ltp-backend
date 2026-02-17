@@ -14,9 +14,14 @@ export const getBookingsController = async (req, res) => {
             endDepartureDate,
             q,
             provider, // new filter
+            userId,
         } = req.query;
 
         const query = { isDeleted: false };
+
+        if (userId) {
+            query.userId = userId
+        }
 
         // ------------------------------
         // Date Filters → createdAt

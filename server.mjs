@@ -11,7 +11,7 @@ import { authenticationMiddleware, limiter, rolesRoutesMiddleware } from "./midd
 import { authRoutes, profileRoutes, unAuthRoutes } from "./routes/index.mjs"
 import { activeAccountMiddleware } from "./middlewares/jwt/index.mjs"
 import { cruiseModel } from "./models/index.mjs"
-import { azamara_cruises, ncl_cruises, oceania_cruises, regent_sevensea_cruises, ritz_carlton_cruises, silversea_cruises } from "./data/index.mjs"
+import { cruise_data } from "./data/index.mjs"
 
 const app = express()
 
@@ -37,40 +37,8 @@ const startPort = Number(process.env.PORT) || 5002;
 app.get("/", (req, res) => res.send("Hello from developer"))
 app.use("/api/v1", authRoutes, unAuthRoutes, authenticationMiddleware, profileRoutes, activeAccountMiddleware, rolesRoutesMiddleware)
 
-
-// DEV APIS: ONLY BACKEND DEVELOPERS ARE ALLOWED TO CALL
-app.get("/add-silversea-data-by-dev", async (req, res) => {
-    // await cruiseModel.create(silversea_cruises)
-    res.send("silversea cruise data added")
-})
-
-app.get("/add-azamara-data-by-dev", async (req, res) => {
-    // await cruiseModel.create(azamara_cruises)
-    res.send("azamara cruise data added")
-})
-
-app.get("/add-ncl-data-by-dev", async (req, res) => {
-    // await cruiseModel.create(ncl_cruises)
-    res.send("ncl cruise data added")
-})
-
-app.get("/add-regent-sevensea-data-by-dev", async (req, res) => {
-    // await cruiseModel.create(regent_sevensea_cruises)
-    res.send("regent sevensea cruise data added")
-})
-
-app.get("/add-oceania-cruises-data-by-dev", async (req, res) => {
-    // await cruiseModel.create(oceania_cruises)
-    res.send("oceania cruise data added")
-})
-
-app.get("/add-ritz-carlton-cruises-data-by-dev", async (req, res) => {
-    // await cruiseModel.create(ritz_carlton_cruises)
-    res.send("ritz carlton cruise data added")
-})
-
 app.get("/operation", async (req, res) => {
-    // await cruiseModel.deleteMany({ provider: "AZAMARA" })
+    // await cruiseModel.create(cruise_data)
     res.send("query executed")
 })
 

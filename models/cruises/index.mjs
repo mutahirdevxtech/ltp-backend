@@ -8,8 +8,8 @@ let cruiseSchema = new mongoose.Schema({
         default: null,
     },
     ship: {
-        type: String,
-        default: null,
+        type: [String],
+        default: [],
     },
     startDate: {
         type: Date,

@@ -3,13 +3,19 @@ import { errorMessages } from "../../../utils/errorMessages.mjs";
 
 export const getCruiseShipsController = async (req, res, next) => {
     try {
-        const { provider } = req?.query
+        const { provider } = req?.query;
 
         let filter = {};
-        if (provider) filter.provider = provider.toUpperCase()
-        const ships = await cruiseModel.distinct("ship", filter);
+        if (provider) filter.provider = provider.toUpperCase();
+
+        // fetch all ships arrays
+        const shipsArrays = await cruiseModel.find(filter, { ship: 1, _id: 0 });
+
+        // flatten arrays and remove duplicates
+        const ships = [...new Set(shipsArrays.flatMap(item => item.ship))];
+
         return res.send({
-            message: "cruise ships fetched",
+            message: "Cruise ships fetched",
             data: ships
         });
 

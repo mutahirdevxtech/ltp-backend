@@ -5,8 +5,8 @@ import { cruise_providers } from "../../../utils/core.mjs";
 
 export const createBookingController = async (req, res) => {
     try {
+        const userId = req?.currentUser?._id
         const {
-            userId,
             provider,
             ship,
             origin,
@@ -73,6 +73,8 @@ export const createBookingController = async (req, res) => {
             req.body.travellersAdults = adults;
             req.body.travellersChildrens = children;
             req.body.travellersInfants = infants;
+        } else if (totalTravellers <= 0) {
+            return res.status(400).send({ message: "at least one persion is required for booking" })
         }
 
         // ------------------ Cruise Link ------------------
