@@ -28,3 +28,22 @@ postmark_credentials:
         username: ltp
         email:    bryan@luxetravelplans.com
         password: Aqw29308077!!!
+
+
+
+
+
+
+
+total bookings
+total customers
+total revenue
+pending bookings
+upcoming departures (upcoming start 3 dates)
+latest customers (3)
+top active customers (3)
+
+
+pie chart providers according to bookings
+revenue by company horizontal bar chart
+monthly revenue vertical bar chart

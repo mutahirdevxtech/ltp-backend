@@ -7,54 +7,74 @@ export const getBulkUsersController = async (req, res, next) => {
     try {
         const {
             isEmailVerified,
-            isPhoneNumberVerified, isPhoneNumberHomeVerified, role,
-            q, status, isDeleted,
-            startJoiningDate, endJoiningDate, startUpdatingDate, endUpdatingDate,
-            country, state, city
+            role,
+            q,
+            status,
+            isDeleted,
+            startJoiningDate,
+            endJoiningDate,
+            startUpdatingDate,
+            endUpdatingDate,
+            page: skip = 0,
+            limit = 10
         } = req?.query
 
         let query = {}
 
+        // 🔹 Date Filters
         if (startJoiningDate && endJoiningDate) {
-            const isoStartJoiningDate = moment(startJoiningDate, "DD-MM-YYYY").format();
-            const isoEndJoiningDate = moment(endJoiningDate, "DD-MM-YYYY").format();
-            query.createdOn = { $gte: isoStartJoiningDate, $lte: isoEndJoiningDate };
+            const isoStartJoiningDate = moment(startJoiningDate, "DD-MM-YYYY").startOf("day").toDate()
+            const isoEndJoiningDate = moment(endJoiningDate, "DD-MM-YYYY").endOf("day").toDate()
+            query.createdOn = { $gte: isoStartJoiningDate, $lte: isoEndJoiningDate }
         }
 
         if (startUpdatingDate && endUpdatingDate) {
-            const isoStartUpdatingDate = moment(startUpdatingDate, "DD-MM-YYYY").format();
-            const isoEndUpdatingDate = moment(endUpdatingDate, "DD-MM-YYYY").format();
-            query.updatedAt = { $gte: isoStartUpdatingDate, $lte: isoEndUpdatingDate };
+            const isoStartUpdatingDate = moment(startUpdatingDate, "DD-MM-YYYY").startOf("day").toDate()
+            const isoEndUpdatingDate = moment(endUpdatingDate, "DD-MM-YYYY").endOf("day").toDate()
+            query.updatedAt = { $gte: isoStartUpdatingDate, $lte: isoEndUpdatingDate }
         }
 
+        // 🔹 Boolean Filters
         if (isEmailVerified != null) query.isEmailVerified = isEmailVerified === "true"
-        if (isPhoneNumberVerified != null) query.isPhoneNumberVerified = isPhoneNumberVerified === "true"
-        if (isPhoneNumberHomeVerified != null) query.isPhoneNumberHomeVerified = isPhoneNumberHomeVerified === "true"
+        if (isDeleted != null) query.isDeleted = isDeleted === "true"
+
+        // 🔹 Other Filters
         if (role) query.role = role?.toUpperCase()
         if (status) query.status = status?.toUpperCase()
-        if (isDeleted != null) query.isDeleted = isDeleted === "true"
-        if (country && country?.trim() !== "") query["address.country"] = country?.trim()
-        if (state && state?.trim() !== "") query["address.state"] = state?.trim()
-        if (city && city?.trim() !== "") query["address.city"] = city?.trim()
 
+        // 🔹 Search
         if (q) {
-            const regex = new RegExp(escapeRegExp(q), 'i')
+            const regex = new RegExp(escapeRegExp(q), "i")
             query.$or = [
                 { firstName: regex },
                 { lastName: regex },
                 { email: regex },
-                { phoneNumber: regex },
-                { phoneNumberHome: regex },
             ]
         }
 
+        // 🔹 Pagination values
+        const parsedSkip = Math.max(0, parseInt(skip) || 0)
+        const parsedLimit = Math.max(1, parseInt(limit) || 10)
+
+        // 🔹 Total Count
+        const totalUsers = await userModel.countDocuments(query)
+
+        // 🔹 Data Fetch
         const users = await userModel.find(query)
             .sort({ _id: -1 })
+            .skip(parsedSkip)
+            .limit(parsedLimit)
+            .select("-password -isDeleted -updatedAt -pushNotifications -is2faEnabled -__v")
             .exec()
 
         return res.send({
             message: "Users fetched successfully",
-            data: { users: users }
+            data: {
+                totalUsers,
+                skip: parsedSkip,
+                limit: parsedLimit,
+                users
+            }
         })
 
     } catch (error) {

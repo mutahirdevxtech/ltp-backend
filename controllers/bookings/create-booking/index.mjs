@@ -7,11 +7,11 @@ export const createBookingController = async (req, res) => {
     try {
         const userId = req?.currentUser?._id
         const {
-            provider,
-            ship,
-            origin,
-            destination,
-            departureDate,
+            // provider,
+            // ship,
+            // origin,
+            // destination,
+            // departureDate,
             travellersAdults = 0,
             travellersChildrens = 0,
             travellersInfants = 0,
@@ -33,28 +33,28 @@ export const createBookingController = async (req, res) => {
         }
 
         // ------------------ Cruise Provider Resolution ------------------
-        let cruise_provider = provider?.trim() || null;
+        // let cruise_provider = provider?.trim() || null;
 
-        if ((!cruise_provider || cruise_provider === "") && ship) {
-            const cruise = await cruiseModel.findOne({ ship: ship.trim() }).lean().exec();
-            if (cruise) {
-                cruise_provider = cruise.provider;
-            }
-        }
+        // if ((!cruise_provider || cruise_provider === "") && ship) {
+        //     const cruise = await cruiseModel.findOne({ ship: ship.trim() }).lean().exec();
+        //     if (cruise) {
+        //         cruise_provider = cruise.provider;
+        //     }
+        // }
 
-        if (cruise_provider && !cruise_providers.includes(cruise_provider)) {
-            return res.status(400).json({ message: "invalid provider" });
-        }
+        // if (cruise_provider && !cruise_providers.includes(cruise_provider)) {
+        //     return res.status(400).json({ message: "invalid provider" });
+        // }
 
         // ------------------ Date Validation ------------------
-        let departure = null;
-        if (departureDate) {
-            const parsedDate = new Date(departureDate);
-            if (isNaN(parsedDate.getTime())) {
-                return res.status(400).json({ message: "departure date must be a valid date" });
-            }
-            departure = parsedDate;
-        }
+        // let departure = null;
+        // if (departureDate) {
+        //     const parsedDate = new Date(departureDate);
+        //     if (isNaN(parsedDate.getTime())) {
+        //         return res.status(400).json({ message: "departure date must be a valid date" });
+        //     }
+        //     departure = parsedDate;
+        // }
 
         // ------------------ Travellers Validation ------------------
         const adults = Number(travellersAdults);
@@ -89,11 +89,11 @@ export const createBookingController = async (req, res) => {
         // ------------------ Create Booking ------------------
         const booking = await bookingModel.create({
             userId,
-            provider: cruise_provider,
-            ship: ship?.trim() || null,
-            origin: origin?.trim() || null,
-            destination: destination?.trim() || null,
-            departureDate: departure,
+            // provider: cruise_provider,
+            // ship: ship?.trim() || null,
+            // origin: origin?.trim() || null,
+            // destination: destination?.trim() || null,
+            // departureDate: departure,
             travellersAdults: adults,
             travellersChildrens: children,
             travellersInfants: infants,

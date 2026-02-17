@@ -26,10 +26,10 @@ router.get("/analytics", getAdminAnalytics)
 router.get("/cruise-data", getCruiseDataController)
 
 // users
-// router.post("/user", multerFileUploadMiddleware.any(), createSingleUserController)
-// router.get("/user/:userId", getSingleUserController)
-// router.put("/user/:userId", multerFileUploadMiddleware.any(), updateSingleUserController)
-// router.get("/users", getBulkUsersController)
+router.post("/user", multerFileUploadMiddleware.any(), createSingleUserController)
+router.get("/user/:userId", getSingleUserController)
+router.put("/user/:userId", multerFileUploadMiddleware.any(), updateSingleUserController)
+router.get("/users", getBulkUsersController)
 
 // contact us
 router.post("/contact", createContactUsController)

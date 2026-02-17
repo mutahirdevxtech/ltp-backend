@@ -25,6 +25,8 @@ export const extendedSessionInDays = 30;
 export const userStatusOptions = ["Active", "Disabled", "Suspended"]
 export const userStatusArray = userStatusOptions.map((option) => option?.toUpperCase())
 
+export const bookingStatuses = ["COMPLETED", "PENDING", "REJECTED"]
+
 // ENUMS
 export const rolesEnum = ["ADMIN", "CUSTOMER"]
 export const loginStatuses = ["INVALID_PASSWORD", "INVALID_OTP", "SUCCESSFULL"]
@@ -60,11 +62,12 @@ export const postmarkEmailTmeplates = {
 export const cloudinaryProfilePicturesFolder = "luxe-travel-plans/profile-pictures"
 
 export const cruise_providers = [
-    "SILVERSEA",
     "CRUISINGPOWER",
-    "AZAMARA",
     "GOCCL",
     "MSCBOOK",
+
+    "SILVERSEA",
+    "AZAMARA",
     "NCL",
     "OCEANIA_CRUISES",
     "REGENT_SEVEN_SEAS",

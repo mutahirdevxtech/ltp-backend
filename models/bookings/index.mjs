@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { cruise_providers } from "../../utils/core.mjs"
+import { bookingStatuses, cruise_providers } from "../../utils/core.mjs"
 
 // booking schema
 let bookingSchema = new mongoose.Schema({
@@ -8,36 +8,36 @@ let bookingSchema = new mongoose.Schema({
         default: null,
         ref: "users",
     },
-    provider: {
-        type: String,
-        enum: cruise_providers,
-        // required: true,
-        trim: true,
-    },
-    ship: {
-        type: String,
-        // required: true,
-        trim: true,
-    },
-    origin: {
-        type: String,
-        // required: true,
-        trim: true,
-        default: null,
-        index: true,
-    },
-    destination: {
-        type: String,
-        // required: true,
-        default: null,
-        trim: true,
-        index: true,
-    },
-    departureDate: {
-        type: Date,
-        default: null
-        // required: true,
-    },
+    // provider: {
+    //     type: String,
+    //     enum: cruise_providers,
+    //     // required: true,
+    //     trim: true,
+    // },
+    // ship: {
+    //     type: String,
+    //     // required: true,
+    //     trim: true,
+    // },
+    // origin: {
+    //     type: String,
+    //     // required: true,
+    //     trim: true,
+    //     default: null,
+    //     index: true,
+    // },
+    // destination: {
+    //     type: String,
+    //     // required: true,
+    //     default: null,
+    //     trim: true,
+    //     index: true,
+    // },
+    // departureDate: {
+    //     type: Date,
+    //     default: null
+    //     // required: true,
+    // },
     // stateroom: {
     //     type: String,
     //     required: true,
@@ -67,6 +67,12 @@ let bookingSchema = new mongoose.Schema({
         type: String,
         trim: true,
         default: null,
+    },
+    status: {
+        type: String,
+        trim: true,
+        enum: bookingStatuses,
+        default: bookingStatuses[1]
     },
     isDeleted: {
         type: Boolean,

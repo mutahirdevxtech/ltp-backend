@@ -1,5 +1,5 @@
 import { errorMessages } from "../../../utils/errorMessages.mjs";
-import { bookingModel } from "../../../models/index.mjs";
+import { bookingModel, cruiseModel } from "../../../models/index.mjs";
 import { escapeRegExp } from "../../../utils/functions.mjs";
 import moment from "moment";
 
@@ -13,41 +13,51 @@ export const getBookingsController = async (req, res) => {
             startDepartureDate,
             endDepartureDate,
             q,
-            provider, // new filter
+            provider,
             userId,
+            page = 1,
+            limit = 10
         } = req.query;
+
+        const pageNumber = parseInt(page);
+        const limitNumber = parseInt(limit);
+        // const skip = (pageNumber - 1) * limitNumber;
+        const skip = pageNumber - 1;
 
         const query = { isDeleted: false };
 
         if (userId) {
-            query.userId = userId
+            query.userId = userId;
         }
 
         // ------------------------------
         // Date Filters → createdAt
         // ------------------------------
         if (startCreatedAt && endCreatedAt) {
-            const isoStart = moment(startCreatedAt, "DD-MM-YYYY").startOf("day").toDate();
-            const isoEnd = moment(endCreatedAt, "DD-MM-YYYY").endOf("day").toDate();
-            query.createdAt = { $gte: isoStart, $lte: isoEnd };
+            query.createdAt = {
+                $gte: moment(startCreatedAt, "DD-MM-YYYY").startOf("day").toDate(),
+                $lte: moment(endCreatedAt, "DD-MM-YYYY").endOf("day").toDate()
+            };
         }
 
         // ------------------------------
         // Date Filters → updatedAt
         // ------------------------------
         if (startUpdatedAt && endUpdatedAt) {
-            const isoStart = moment(startUpdatedAt, "DD-MM-YYYY").startOf("day").toDate();
-            const isoEnd = moment(endUpdatedAt, "DD-MM-YYYY").endOf("day").toDate();
-            query.updatedAt = { $gte: isoStart, $lte: isoEnd };
+            query.updatedAt = {
+                $gte: moment(startUpdatedAt, "DD-MM-YYYY").startOf("day").toDate(),
+                $lte: moment(endUpdatedAt, "DD-MM-YYYY").endOf("day").toDate()
+            };
         }
 
         // ------------------------------
         // Date Filters → departureDate
         // ------------------------------
         if (startDepartureDate && endDepartureDate) {
-            const isoStart = moment(startDepartureDate, "DD-MM-YYYY").startOf("day").toDate();
-            const isoEnd = moment(endDepartureDate, "DD-MM-YYYY").endOf("day").toDate();
-            query.departureDate = { $gte: isoStart, $lte: isoEnd };
+            query.departureDate = {
+                $gte: moment(startDepartureDate, "DD-MM-YYYY").startOf("day").toDate(),
+                $lte: moment(endDepartureDate, "DD-MM-YYYY").endOf("day").toDate()
+            };
         }
 
         // ------------------------------
@@ -58,7 +68,7 @@ export const getBookingsController = async (req, res) => {
         }
 
         // ------------------------------
-        // Search Filter → origin / destination
+        // Search Filter
         // ------------------------------
         if (q) {
             const regex = new RegExp(escapeRegExp(q), "i");
@@ -69,17 +79,64 @@ export const getBookingsController = async (req, res) => {
         }
 
         // ------------------------------
-        // Fetch bookings
+        // Total Count (before pagination)
         // ------------------------------
-        const resp = await bookingModel
+        const total = await bookingModel.countDocuments(query);
+
+        // ------------------------------
+        // Fetch Paginated Bookings
+        // ------------------------------
+        const bookings = await bookingModel
             .find(query)
+            .select("-updatedAt -isDeleted")
             .sort({ _id: -1 })
+            .skip(skip)
+            .limit(limitNumber)
+            .populate({
+                path: "userId",
+                select: "firstName lastName email"
+            })
             .lean()
             .exec();
 
+        // ------------------------------
+        // Fetch Related Cruises (Optimized)
+        // ------------------------------
+        const cruiseLinks = [
+            ...new Set(
+                bookings
+                    .map(b => b.cruiseLink)
+                    .filter(Boolean)
+            )
+        ];
+
+        const cruises = await cruiseModel.find({
+            link: { $in: cruiseLinks }
+        })
+            .select("-createdAt -updatedAt -isDeleted -__v")
+            .lean();
+
+        const cruiseMap = {};
+        cruises.forEach(c => {
+            cruiseMap[c.link] = c;
+        });
+
+        const bookingsWithCruise = bookings.map(b => ({
+            ...b,
+            cruiseData: b.cruiseLink
+                ? cruiseMap[b.cruiseLink] || null
+                : null
+        }));
+
+        // ------------------------------
+        // Final Response
+        // ------------------------------
         return res.send({
             message: "bookings fetched successfully",
-            data: resp,
+            total,
+            totalPages: Math.ceil(total / limitNumber),
+            currentPage: pageNumber,
+            data: bookingsWithCruise,
         });
 
     } catch (error) {
