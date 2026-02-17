@@ -2,6 +2,7 @@ import { isValidObjectId } from "mongoose";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 import { cruiseModel } from "../../../models/index.mjs";
 import { getSingleCruiseDataAzamara, getSingleCruiseDataNCL, getSingleCruiseDataOceania, getSingleCruiseDataRegent, getSingleCruiseDataRitzCarlton, getSingleCruiseDataSilverSea } from "../../../scrappers/index.mjs"
+import { getSingleCruiseDataViking, getSingleCruiseDataVirgin } from "../../../scrappers/single/index.mjs";
 
 export const getSingleCruiseDataController = async (req, res, next) => {
     try {
@@ -48,6 +49,12 @@ export const getSingleCruiseDataController = async (req, res, next) => {
                     break;
                 case "RITZ_CARLTON_CRUISES":
                     cruise_details = await getSingleCruiseDataRitzCarlton(cruise?.link)
+                    break;
+                case "VIRGIN_CRUISES":
+                    cruise_details = await getSingleCruiseDataVirgin(cruise?.link)
+                    break;
+                case "VIKING_CRUISES":
+                    cruise_details = await getSingleCruiseDataViking(cruise?.link)
                     break;
 
                 default:
