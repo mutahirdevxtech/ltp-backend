@@ -121,9 +121,11 @@ export const getAdminAnalytics = async (req, res, next) => {
         return res.send({
             message: "analytics fetched",
             data: {
-                totalBookings,
-                totalCustomers,
-                totalPendingBookings,
+                figures: [
+                    { title: "total bookings",value: totalBookings },
+                    { title: "total customers",value: totalCustomers },
+                    { title: "total pending bookings",value: totalPendingBookings },
+                ],
                 upcomingDepartures,
                 latestCustomers,
                 topActiveCustomers,
