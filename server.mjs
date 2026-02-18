@@ -39,6 +39,7 @@ app.use("/api/v1", authRoutes, unAuthRoutes, authenticationMiddleware, profileRo
 
 app.get("/operation", async (req, res) => {
     // await cruiseModel.create(cruise_data)
+    // await cruiseModel.deleteMany({})
     res.send("query executed")
 })
 

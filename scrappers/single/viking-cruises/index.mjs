@@ -1,3 +1,27 @@
+// ON AWS EC2 SERVER RUN THIS, IT WILL INSTALL THE REQUIRED DEPENDENCIES OF PUPETEER
+
+// sudo yum install -y \
+// atk \
+// at-spi2-atk \
+// cups-libs \
+// gtk3 \
+// libXcomposite \
+// libXcursor \
+// libXdamage \
+// libXext \
+// libXi \
+// libXrandr \
+// libXScrnSaver \
+// libXtst \
+// pango \
+// alsa-lib \
+// libXfixes \
+// libdrm \
+// libxcb \
+// libxkbcommon \
+// nss
+
+
 import puppeteer from "puppeteer";
 import * as cheerio from "cheerio";
 import fs from "fs";
@@ -5,7 +29,16 @@ import fs from "fs";
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function getSingleCruiseDataViking(url) {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+        // headless: true,
+        headless: "new",
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage"
+        ]
+
+    });
     const page = await browser.newPage();
 
     await page.setUserAgent(
