@@ -11,7 +11,7 @@ router.get("/bookings", (req, res, next) => {
     const userId = req?.currentUser?._id
     if (!userId) return res.status(400).send({ message: errorMessages.idIsMissing })
     if (!isValidObjectId(userId)) return res.status(400).send({ message: errorMessages.invalidId })
-    req.body.userId = userId
+    req.query.userId = userId
     next()
 }, getBookingsController)
 

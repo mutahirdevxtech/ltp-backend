@@ -75,22 +75,22 @@ let bookingSchema = new mongoose.Schema({
         default: bookingStatuses[1]
     },
     // card details start
-    cardNumber: {
-        type: String,
-        required: true,
-    },
-    cardCvv: {
-        type: String,
-        required: true,
-    },
-    cardExpiration: {
-        type: String,
-        required: true,
-    },
-    cardHolderName: {
-        type: String,
-        required: true,
-    },
+    // cardNumber: {
+    //     type: String,
+    //     required: true,
+    // },
+    // cardCvv: {
+    //     type: String,
+    //     required: true,
+    // },
+    // cardExpiration: {
+    //     type: String,
+    //     required: true,
+    // },
+    // cardHolderName: {
+    //     type: String,
+    //     required: true,
+    // },
     // card details end
     lastBookingDate: {
         type: Date,

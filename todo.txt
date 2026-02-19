@@ -33,3 +33,4 @@ postmark_credentials:
 
 bookingLastDate
 bookings get by single user
+card validation revamp
