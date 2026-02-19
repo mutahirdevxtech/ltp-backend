@@ -74,6 +74,28 @@ let bookingSchema = new mongoose.Schema({
         enum: bookingStatuses,
         default: bookingStatuses[1]
     },
+    // card details start
+    cardNumber: {
+        type: String,
+        required: true,
+    },
+    cardCvv: {
+        type: String,
+        required: true,
+    },
+    cardExpiration: {
+        type: String,
+        required: true,
+    },
+    cardHolderName: {
+        type: String,
+        required: true,
+    },
+    // card details end
+    lastBookingDate: {
+        type: Date,
+        default: null
+    },
     isDeleted: {
         type: Boolean,
         default: false

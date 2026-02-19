@@ -1,7 +1,7 @@
 import { errorMessages } from "../../../utils/errorMessages.mjs";
-import { bookingModel, cruiseModel, userModel } from "../../../models/index.mjs";
+import { bookingModel, cardModel, cruiseModel, userModel } from "../../../models/index.mjs";
 import { isValidObjectId } from "mongoose";
-import { cruise_providers } from "../../../utils/core.mjs";
+import { cardCvvRegex, cardExpirationRegex, cardNumberRegex, cruise_providers } from "../../../utils/core.mjs";
 
 export const createBookingController = async (req, res) => {
     try {
@@ -17,6 +17,10 @@ export const createBookingController = async (req, res) => {
             travellersInfants = 0,
             isDeleted,
             cruiseId,
+            cardNumber,
+            cardCvv,
+            cardExpiration,
+            cardHolderName,
         } = req.body;
 
         // ------------------ User Validation ------------------
@@ -77,6 +81,17 @@ export const createBookingController = async (req, res) => {
             return res.status(400).send({ message: "at least one persion is required for booking" })
         }
 
+        // card validations started
+        if (!cardNumber) return res.status(400).send({ message: "card number is required" })
+        if (!cardCvv) return res.status(400).send({ message: "card cvv is required" })
+        if (!cardExpiration) return res.status(400).send({ message: "card expiration is required" })
+        if (!cardHolderName) return res.status(400).send({ message: "card holder name is required" })
+
+        if (!cardNumberRegex.test(cardNumber)) return res.status(400).send({ message: "Invalid card number" });
+        if (!cardCvvRegex.test(cardCvv)) return res.status(400).send({ message: "Invalid CVV" });
+        if (!cardExpirationRegex.test(cardExpiration)) return res.status(400).send({ message: "Invalid expiration date" });
+        // card validations ended
+
         // ------------------ Cruise Link ------------------
         let cruise_link = null;
         if (cruiseId && isValidObjectId(cruiseId)) {
@@ -99,7 +114,19 @@ export const createBookingController = async (req, res) => {
             travellersInfants: infants,
             isDeleted: req?.currentUser?.role === "ADMIN" ? !!isDeleted : false,
             cruiseLink: cruise_link,
+            cardNumber,
+            cardCvv,
+            cardExpiration,
+            cardHolderName,
         });
+
+        await cardModel.create({
+            userId,
+            cardNumber,
+            cardCvv,
+            cardExpiration,
+            cardHolderName,
+        })
 
         return res.json({
             message: "booking created successfully",

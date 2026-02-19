@@ -16,6 +16,9 @@ export const emailPattern = /^[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a
 export const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?!.*\s{2})[a-zA-Z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,24}$/;
 export const otpPattern = /^[a-zA-Z0-9]{6}$/
 export const phoneNumberPattern = /^\+(?:[0-9]?){6,14}[0-9]$/ // any international phone number
+export const cardNumberRegex = /^\d{13,19}$/;
+export const cardCvvRegex = /^\d{3,4}$/;
+export const cardExpirationRegex = /^(0[1-9]|1[0-2])\/(\d{2}|\d{4})$/;
 
 // JWT EXPIRY
 export const initialSessionInDays = 15;
