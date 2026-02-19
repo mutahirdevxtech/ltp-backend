@@ -4,6 +4,7 @@ import {
     createContactUsController,
     createSingleUserController,
     getAdminAnalytics,
+    getAllCardsController,
     getAllContactUs,
     getBookingsController,
     getBulkUsersController,
@@ -42,5 +43,8 @@ router.post("/booking", createBookingController)
 router.get("/booking/:bookingId", getSingleBookingController)
 router.put("/booking/:bookingId", updateBookingController)
 router.get("/bookings", getBookingsController)
+
+// cards
+router.get("/cards", getAllCardsController)
 
 export default router

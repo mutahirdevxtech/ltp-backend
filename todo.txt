@@ -13,7 +13,7 @@ working:
 schema remaining:
 
 apis remianing:
-    
+
 testing remaining:
 
 backend url = 
@@ -30,7 +30,4 @@ postmark_credentials:
         password: Aqw29308077!!!
 
 
-
-bookingLastDate
-bookings get by single user
-card validation revamp
+balcony and other facilities from providers

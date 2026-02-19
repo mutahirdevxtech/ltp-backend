@@ -39,3 +39,7 @@ export {
     createBookingController, getBookingsController,
     getSingleBookingController, updateBookingController,
 } from "./bookings/index.mjs"
+
+export {
+    getAllCardsController
+} from "./cards/index.mjs"

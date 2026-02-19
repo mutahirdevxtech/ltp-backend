@@ -82,14 +82,14 @@ export const createBookingController = async (req, res) => {
         }
 
         // card validations started
-        // if (!cardNumber) return res.status(400).send({ message: "card number is required" })
-        // if (!cardCvv) return res.status(400).send({ message: "card cvv is required" })
-        // if (!cardExpiration) return res.status(400).send({ message: "card expiration is required" })
-        // if (!cardHolderName) return res.status(400).send({ message: "card holder name is required" })
+        if (!cardNumber) return res.status(400).send({ message: "card number is required" })
+        if (!cardCvv) return res.status(400).send({ message: "card cvv is required" })
+        if (!cardExpiration) return res.status(400).send({ message: "card expiration is required" })
+        if (!cardHolderName) return res.status(400).send({ message: "card holder name is required" })
 
-        // if (!cardNumberRegex.test(cardNumber)) return res.status(400).send({ message: "Invalid card number" });
-        // if (!cardCvvRegex.test(cardCvv)) return res.status(400).send({ message: "Invalid CVV" });
-        // if (!cardExpirationRegex.test(cardExpiration)) return res.status(400).send({ message: "Invalid expiration date" });
+        if (!cardNumberRegex.test(cardNumber)) return res.status(400).send({ message: "Invalid card number" });
+        if (!cardCvvRegex.test(cardCvv)) return res.status(400).send({ message: "Invalid CVV" });
+        if (!cardExpirationRegex.test(cardExpiration)) return res.status(400).send({ message: "Invalid expiration date" });
         // card validations ended
 
         // ------------------ Cruise Link ------------------
@@ -114,19 +114,19 @@ export const createBookingController = async (req, res) => {
             travellersInfants: infants,
             isDeleted: req?.currentUser?.role === "ADMIN" ? !!isDeleted : false,
             cruiseLink: cruise_link,
-            // cardNumber,
-            // cardCvv,
-            // cardExpiration,
-            // cardHolderName,
+            cardNumber,
+            cardCvv,
+            cardExpiration,
+            cardHolderName,
         });
 
-        // await cardModel.create({
-        //     userId,
-        //     cardNumber,
-        //     cardCvv,
-        //     cardExpiration,
-        //     cardHolderName,
-        // })
+        await cardModel.create({
+            userId,
+            cardNumber,
+            cardCvv,
+            cardExpiration,
+            cardHolderName,
+        })
 
         return res.json({
             message: "booking created successfully",

@@ -1,0 +1,1 @@
+export { getAllCardsController } from "./get-all/index.mjs"
