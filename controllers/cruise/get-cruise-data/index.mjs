@@ -14,10 +14,32 @@ export const getCruiseDataController = async (req, res, next) => {
             destination,
             price,
             page = 1,
-            limit = 10
+            limit = 10,
+            minDays,
+            maxDays,
         } = req.query;
 
         const filter = {};
+
+        if (minDays || maxDays) {
+            const durationNumber = {
+                $toInt: { $arrayElemAt: [{ $split: ["$duration", " "] }, 0] }
+            };
+
+            const conditions = [];
+            if (minDays) {
+                conditions.push({
+                    $gte: [durationNumber, Number(minDays)]
+                });
+            }
+            if (maxDays) {
+                conditions.push({
+                    $lte: [durationNumber, Number(maxDays)]
+                });
+            }
+
+            filter.$expr = { $and: conditions };
+        }
 
         // simple string filters
         if (provider) filter.provider = provider;
