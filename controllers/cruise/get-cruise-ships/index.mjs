@@ -12,7 +12,9 @@ export const getCruiseShipsController = async (req, res, next) => {
         const shipsArrays = await cruiseModel.find(filter, { ship: 1, _id: 0 });
 
         // flatten arrays and remove duplicates
-        const ships = [...new Set(shipsArrays.flatMap(item => item.ship))];
+        const ships = [...new Set(shipsArrays.flatMap(item => item.ship))].sort((a, b) =>
+            a.localeCompare(b)
+        );
 
         return res.send({
             message: "Cruise ships fetched",

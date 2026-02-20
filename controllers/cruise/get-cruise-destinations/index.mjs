@@ -36,7 +36,9 @@ export const getCruiseDestinationsController = async (req, res, next) => {
             }
         });
 
-        const destinations = Array.from(destinationsSet);
+        const destinations = Array.from(destinationsSet).sort((a, b) =>
+            a.localeCompare(b)
+        );
 
         return res.send({
             message: "Cruise destinations fetched",

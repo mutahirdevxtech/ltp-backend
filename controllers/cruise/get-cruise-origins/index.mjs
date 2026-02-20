@@ -28,7 +28,9 @@ export const getCruiseOriginsController = async (req, res, next) => {
             }
         });
 
-        const origins = Array.from(originsSet);
+        const origins = Array.from(originsSet).sort((a, b) =>
+            a.localeCompare(b)
+        );
 
         return res.send({
             message: "Cruise origins fetched",
