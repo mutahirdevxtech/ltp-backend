@@ -11,7 +11,9 @@ export const getAllContactUs = async (req, res) => {
             startCreatedAt,
             endCreatedAt,
             startUpdatedAt,
-            endUpdatedAt
+            endUpdatedAt,
+            page: skip = 0,
+            limit = 10,
         } = req.query;
 
         let query = {};
@@ -42,7 +44,7 @@ export const getAllContactUs = async (req, res) => {
         }
 
         // ------------------------------
-        // Searching → title, fullName, email
+        // Search filter
         // ------------------------------
         if (q) {
             const regex = new RegExp(escapeRegExp(q), "i");
@@ -53,18 +55,35 @@ export const getAllContactUs = async (req, res) => {
             ];
         }
 
-        // ------------------------------
-        // Fetch data
-        // ------------------------------
-        const resp = await contactUsModel
-            .find(query)
-            .sort({ _id: -1 })
-            .lean()
-            .exec();
+        const parsedSkip = parseInt(skip) || 0;
+        const parsedLimit = parseInt(limit) || 10;
+
+        const [data, totalRecords] = await Promise.all([
+            contactUsModel
+                .find(query)
+                .sort({ _id: -1 })
+                .skip(parsedSkip)
+                .limit(parsedLimit)
+                .lean()
+                .exec(),
+            contactUsModel.countDocuments(query)
+        ]);
+
+        const totalPages = Math.ceil(totalRecords / parsedLimit);
+        const currentPage = Math.floor(parsedSkip / parsedLimit) + 1;
 
         return res.send({
             message: "contact requests fetched successfully",
-            data: resp
+            pagination: {
+                totalRecords,
+                totalPages,
+                currentPage,
+                limit: parsedLimit,
+                skip: parsedSkip,
+                hasNextPage: currentPage < totalPages,
+                hasPrevPage: currentPage > 1
+            },
+            data
         });
 
     } catch (error) {
