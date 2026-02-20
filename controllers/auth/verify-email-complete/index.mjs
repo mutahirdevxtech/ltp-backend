@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { userModel, verifyEmailOtpModel } from "../../../models/index.mjs";
 import { emailPattern, otpPattern } from "../../../utils/core.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
-// import { sendWelcomeEmail } from "../../../libs/postmark.mjs";
+import { sendWelcomeEmail } from "../../../libs/postmark.mjs";
 
 export const verifyEmailCompleteController = async (req, res, next) => {
     try {
@@ -69,7 +69,7 @@ export const verifyEmailCompleteController = async (req, res, next) => {
         await user.save()
 
         // pstmark email
-        // await sendWelcomeEmail(user?.email?.toLowerCase(), user?.firstName)
+        await sendWelcomeEmail(user?.email?.toLowerCase(), user?.firstName)
 
         res.send({ message: "email verified successfully" })
 

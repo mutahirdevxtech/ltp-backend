@@ -8,7 +8,7 @@ export const sendEmailVerificationEmail = async (email, username, otp) => {
     try {
         const templateModel = {
             username,
-            otp_code: otp,
+            otp: otp,
         };
 
         await client.sendEmailWithTemplate({
@@ -28,13 +28,13 @@ export const sendSecureLoginOtpEmail = async (email, username, otp) => {
     try {
         const templateModel = {
             username,
-            verification_code: otp,
+            otp: otp,
         };
 
         await client.sendEmailWithTemplate({
             From: companyEmail,
             To: email?.toLowerCase(),
-            TemplateId: postmarkEmailTmeplates.secureLoginOtpRemplate,
+            TemplateId: postmarkEmailTmeplates.secureLoginOtpTemplate,
             TemplateModel: templateModel,
         });
 
@@ -48,7 +48,7 @@ export const sendForgotPasswordEmail = async (email, username, otp) => {
     try {
         const templateModel = {
             username,
-            verification_code: otp,
+            otp: otp,
         };
 
         await client.sendEmailWithTemplate({
@@ -98,9 +98,11 @@ export const sendAccountUnSuspendTemplate = async (email, username) => {
     }
 };
 
-export const sendWelcomeEmail = async (email) => {
+export const sendWelcomeEmail = async (email, username) => {
     try {
-        const templateModel = { };
+        const templateModel = {
+            username: username
+        };
 
         await client.sendEmailWithTemplate({
             From: companyEmail,

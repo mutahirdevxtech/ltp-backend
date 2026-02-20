@@ -2,7 +2,7 @@ import { forgotPasswordOtpModel, userModel } from "../../../models/index.mjs";
 import { emailPattern, otpPattern, passwordPattern } from "../../../utils/core.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 import { checkUserStatusUnAuth } from "../../../utils/functions.mjs"
-// import { sendForgotPasswordEmail } from "../../../libs/postmark.mjs"
+import { sendForgotPasswordEmail } from "../../../libs/postmark.mjs"
 import otpGenerator from "otp-generator"
 import bcrypt from "bcrypt"
 import moment from "moment"
@@ -71,7 +71,7 @@ export const forgotPasswordEmailController = async (req, res, next) => {
         })
 
         // postmark
-        // await sendForgotPasswordEmail(user?.email?.trim()?.toLowerCase(), user?.firstName, otpCode)
+        await sendForgotPasswordEmail(user?.email?.trim()?.toLowerCase(), user?.firstName, otpCode)
         return res.send({ message: errorMessages.forgotPasswordEmailDone })
 
     } catch (error) {

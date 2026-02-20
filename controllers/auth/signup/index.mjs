@@ -2,7 +2,6 @@ import bcrypt from "bcrypt"
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 import { userModel } from "../../../models/index.mjs"
 import { emailPattern, firstNamePattern, lastNamePattern, passwordPattern } from "../../../utils/core.mjs"
-// import { sendWelcomeEmail } from "../../../libs/postmark.mjs"
 
 export const signupController = async (req, res, next) => {
     try {

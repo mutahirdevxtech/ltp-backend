@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import { userModel, verifyEmailOtpModel } from "../../../models/index.mjs";
 import { emailPattern } from "../../../utils/core.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
-// import { sendEmailVerificationEmail } from "../../../libs/postmark.mjs"
+import { sendEmailVerificationEmail } from "../../../libs/postmark.mjs"
 
 export const verifyEmailOtpController = async (req, res, next) => {
     try {
@@ -57,7 +57,7 @@ export const verifyEmailOtpController = async (req, res, next) => {
         })
 
         // postmark
-        // await sendEmailVerificationEmail(email?.trim()?.toLowerCase(), user?.firstName, otpCode)
+        await sendEmailVerificationEmail(email?.trim()?.toLowerCase(), user?.firstName, otpCode)
 
         return res.send({ message: "email verification otp has sent" })
 

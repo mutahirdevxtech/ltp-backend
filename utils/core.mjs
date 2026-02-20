@@ -54,10 +54,10 @@ export const companyEmail = "bryan@luxetravelplans.com"
 
 // POSTMARK EMAIL TEMPLATES
 export const postmarkEmailTmeplates = {
-    emailVerificationTemplate: "",
-    forgotPasswordTemplate: "",
+    emailVerificationTemplate: "43589459",
+    forgotPasswordTemplate: "43589568",
     welcomeTemplate: "43345890",
-    secureLoginOtpTemplate: "",
+    secureLoginOtpTemplate: "43589614",
     accountActivationTemplate: "",
 }
 

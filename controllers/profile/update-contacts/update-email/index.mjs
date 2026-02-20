@@ -1,7 +1,7 @@
 import { userModel, verifyEmailOtpModel } from "../../../../models/index.mjs";
 import { emailPattern, otpPattern } from "../../../../utils/core.mjs";
 import { errorMessages } from "../../../../utils/errorMessages.mjs";
-// import { sendEmailVerificationEmail } from "../../../../libs/postmark.mjs";
+import { sendEmailVerificationEmail } from "../../../../libs/postmark.mjs";
 import otpGenerator from "otp-generator"
 import bcrypt from "bcrypt"
 import moment from "moment"
@@ -60,7 +60,7 @@ export const verifyProfileEmailOtpController = async (req, res, next) => {
         })
 
         // postmark
-        // await sendEmailVerificationEmail(email?.trim()?.toLowerCase(), user?.firstName, otpCode)
+        await sendEmailVerificationEmail(email?.trim()?.toLowerCase(), user?.firstName, otpCode)
         return res.send({ message: "verify email otp has sent" })
 
     } catch (error) {

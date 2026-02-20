@@ -5,7 +5,7 @@ import { checkUserStatusUnAuth } from "../../../utils/functions.mjs";
 import bcrypt from "bcrypt"
 import otpGenerator from "otp-generator"
 import moment from "moment";
-// import { sendSecureLoginOtpEmail } from "../../../libs/postmark.mjs";
+import { sendSecureLoginOtpEmail } from "../../../libs/postmark.mjs";
 // import { sendSingleMessage } from "../../../libs/twilio.mjs"
 
 export const sendSecureLoginOtpController = async (req, res, next) => {
@@ -73,7 +73,7 @@ export const sendSecureLoginOtpController = async (req, res, next) => {
         })
 
         // postmark
-        // await sendSecureLoginOtpEmail(user?.email?.trim()?.toLowerCase(), user?.firstName, otpCode)
+        await sendSecureLoginOtpEmail(user?.email?.trim()?.toLowerCase(), user?.firstName, otpCode)
         // twilio sms send
         // const _message = `Hi ${user?.firstName}, your TNC LMS account's secure login OTP is: ${otpCode}. It is valid for 15 minutes.`;
         // await sendSingleMessage(phoneNumber?.trim(), message)
