@@ -28,3 +28,10 @@ balcony and other facilities from providers
 
 send providers on the basis of ports
 get ships on the basis of ports and providers
+
+
+
+
+apis for devs LTP & changes
+email templates acc setup estate coins
+estate coins backend api docs

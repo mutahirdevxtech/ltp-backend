@@ -16,18 +16,21 @@ export const getCruiseShipsController = async (req, res) => {
         // 🔹 Origin/Destination filter (based on title: "BOSTON to QUEBEC")
         if (origin || destination) {
 
-            const escapedOrigin = origin ? escapeRegExp(origin) : null;
-            const escapedDestination = destination ? escapeRegExp(destination) : null;
+            const escapedOrigin = origin ? escapeRegExp(origin.trim()) : null;
+            const escapedDestination = destination ? escapeRegExp(destination.trim()) : null;
 
-            if (origin && !destination) {
+            // Only origin
+            if (escapedOrigin && !escapedDestination) {
                 matchStage.title = new RegExp(`^${escapedOrigin}\\s+to`, "i");
             }
 
-            if (!origin && destination) {
+            // Only destination
+            if (!escapedOrigin && escapedDestination) {
                 matchStage.title = new RegExp(`to\\s+${escapedDestination}$`, "i");
             }
 
-            if (origin && destination) {
+            // Both origin & destination
+            if (escapedOrigin && escapedDestination) {
                 matchStage.title = new RegExp(
                     `^${escapedOrigin}\\s+to\\s+${escapedDestination}$`,
                     "i"

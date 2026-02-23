@@ -1,6 +1,6 @@
 export const escapeRegExp = (text) => {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
 
 export const checkUserStatusUnAuth = (status) => {
     switch (status) {

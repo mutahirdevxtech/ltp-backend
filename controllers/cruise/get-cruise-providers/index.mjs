@@ -1,5 +1,6 @@
 import { cruiseModel } from "../../../models/index.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
+import { escapeRegExp } from "../../../utils/functions.mjs";
 
 export const getCruiseProvidersController = async (req, res) => {
     try {
@@ -7,22 +8,28 @@ export const getCruiseProvidersController = async (req, res) => {
 
         let filter = {};
 
+        // sanitize inputs
+        const safeOrigin = origin ? escapeRegExp(origin.trim()) : null;
+        const safeDestination = destination ? escapeRegExp(destination.trim()) : null;
+
         // Case 1: Only origin
-        if (origin && !destination) {
-            filter.title = new RegExp(`^${origin}\\s+to`, "i");
+        if (safeOrigin && !safeDestination) {
+            filter.title = new RegExp(`^${safeOrigin}\\s+to`, "i");
         }
 
         // Case 2: Only destination
-        if (!origin && destination) {
-            filter.title = new RegExp(`to\\s+${destination}$`, "i");
+        if (!safeOrigin && safeDestination) {
+            filter.title = new RegExp(`to\\s+${safeDestination}$`, "i");
         }
 
         // Case 3: Both
-        if (origin && destination) {
-            filter.title = new RegExp(`^${origin}\\s+to\\s+${destination}$`, "i");
+        if (safeOrigin && safeDestination) {
+            filter.title = new RegExp(
+                `^${safeOrigin}\\s+to\\s+${safeDestination}$`,
+                "i"
+            );
         }
 
-        // Direct unique providers from DB
         const providers = await cruiseModel.distinct("provider", filter);
 
         providers.sort((a, b) => a.localeCompare(b));
@@ -35,7 +42,7 @@ export const getCruiseProvidersController = async (req, res) => {
     } catch (error) {
         console.error(error);
         return res.status(500).send({
-            message: "Server Error",
+            message: errorMessages.serverError,
             error: error.message
         });
     }
