@@ -1,34 +1,44 @@
 import { cruiseModel } from "../../../models/index.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
+import { escapeRegExp } from "../../../utils/functions.mjs";
 
-export const getCruiseOriginsController = async (req, res, next) => {
+export const getCruiseOriginsController = async (req, res) => {
     try {
         const { ship } = req.query;
 
         const query = {};
 
+        // ✅ Case-insensitive ship search (safe regex)
         if (ship) {
-            // match if the ship array contains the string from frontend
-            query.ship = { $in: [ship] };
+            query.ship = {
+                $elemMatch: {
+                    $regex: new RegExp(
+                        `^${escapeRegExp(ship)}$`,
+                        "i"
+                    )
+                }
+            };
         }
 
-        // fetch all cruise titles that match the ship
-        const cruises = await cruiseModel.find(
-            query,
-            { title: 1, _id: 0 }
-        );
+        // ✅ Fetch only required field + lean for performance
+        const cruises = await cruiseModel
+            .find(query, { title: 1, _id: 0 })
+            .lean();
 
-        // extract unique origins from "A to B" titles
+        // ✅ Unique + Uppercase Origins
         const originsSet = new Set();
 
-        cruises.forEach(c => {
-            if (c.title && c.title.includes(" to ")) {
-                const origin = c.title.split(" to ")[0].trim();
-                originsSet.add(origin);
-            }
-        });
+        for (const c of cruises) {
+            if (!c.title) continue;
 
-        const origins = Array.from(originsSet).sort((a, b) =>
+            const parts = c.title.split(" to ");
+            if (parts.length !== 2) continue;
+
+            const origin = parts[0].trim().toUpperCase();
+            originsSet.add(origin);
+        }
+
+        const origins = [...originsSet].sort((a, b) =>
             a.localeCompare(b)
         );
 

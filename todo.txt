@@ -1,37 +1,7 @@
 todo:
-    analytics api
-    create postmark account
-    deploy server
-
     redis cache
     all apis output changed to wanted only
-    postmark
-    mailchimp
+    upload image remove from folder
 
-working:
-
-schema remaining:
-
-apis remianing:
-
-testing remaining:
-
-backend url = 
-
-V2:
-
-upload image remove from folder
-
-
+card and payment
 balcony and other facilities from providers
-
-
-send providers on the basis of ports
-get ships on the basis of ports and providers
-
-
-
-
-apis for devs LTP & changes
-email templates acc setup estate coins
-estate coins backend api docs

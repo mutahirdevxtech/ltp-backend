@@ -6,33 +6,55 @@ export const getCruiseProvidersController = async (req, res) => {
     try {
         const { origin, destination } = req.query;
 
-        let filter = {};
+        const filter = {};
 
-        // sanitize inputs
-        const safeOrigin = origin ? escapeRegExp(origin.trim()) : null;
-        const safeDestination = destination ? escapeRegExp(destination.trim()) : null;
+        const safeOrigin = origin?.trim()
+            ? escapeRegExp(origin.trim())
+            : null;
 
-        // Case 1: Only origin
+        const safeDestination = destination?.trim()
+            ? escapeRegExp(destination.trim())
+            : null;
+
+        // ✅ Build regex condition safely
         if (safeOrigin && !safeDestination) {
-            filter.title = new RegExp(`^${safeOrigin}\\s+to`, "i");
+            filter.title = {
+                $regex: new RegExp(`^${safeOrigin}\\s+to`, "i")
+            };
         }
 
-        // Case 2: Only destination
         if (!safeOrigin && safeDestination) {
-            filter.title = new RegExp(`to\\s+${safeDestination}$`, "i");
+            filter.title = {
+                $regex: new RegExp(`to\\s+${safeDestination}$`, "i")
+            };
         }
 
-        // Case 3: Both
         if (safeOrigin && safeDestination) {
-            filter.title = new RegExp(
-                `^${safeOrigin}\\s+to\\s+${safeDestination}$`,
-                "i"
-            );
+            filter.title = {
+                $regex: new RegExp(
+                    `^${safeOrigin}\\s+to\\s+${safeDestination}$`,
+                    "i"
+                )
+            };
         }
 
-        const providers = await cruiseModel.distinct("provider", filter);
+        // ✅ DB-level distinct
+        const rawProviders = await cruiseModel.distinct(
+            "provider",
+            filter
+        );
 
-        providers.sort((a, b) => a.localeCompare(b));
+        // ✅ Normalize (uppercase) + unique (case-insensitive dedupe)
+        const providersSet = new Set();
+
+        for (const provider of rawProviders) {
+            if (!provider) continue;
+            providersSet.add(provider.trim().toUpperCase());
+        }
+
+        const providers = [...providersSet].sort((a, b) =>
+            a.localeCompare(b)
+        );
 
         return res.send({
             message: "Cruise providers fetched",

@@ -1,8 +1,13 @@
 import { isValidObjectId } from "mongoose";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
 import { cruiseModel } from "../../../models/index.mjs";
-import { getSingleCruiseDataAzamara, getSingleCruiseDataNCL, getSingleCruiseDataOceania, getSingleCruiseDataRegent, getSingleCruiseDataRitzCarlton, getSingleCruiseDataSilverSea } from "../../../scrappers/index.mjs"
-import { getSingleCruiseDataViking, getSingleCruiseDataVirgin } from "../../../scrappers/single/index.mjs";
+import {
+    getSingleCruiseDataAzamara, getSingleCruiseDataNCL,
+    getSingleCruiseDataOceania, getSingleCruiseDataRegent,
+    getSingleCruiseDataRitzCarlton, getSingleCruiseDataSilverSea,
+    getSingleCruiseDataViking, getSingleCruiseDataVirgin,
+    scrapeCarnival, scrapeCelebrity, scrapeCunard, scrapePrincess, scrapeRoyalCaribbean
+} from "../../../scrappers/index.mjs"
 
 export const getSingleCruiseDataController = async (req, res, next) => {
     try {
@@ -55,6 +60,28 @@ export const getSingleCruiseDataController = async (req, res, next) => {
                     break;
                 case "VIKING_CRUISES":
                     cruise_details = await getSingleCruiseDataViking(cruise?.link)
+                    break;
+                case "ROYAL_CARIBBEAN":
+                    cruise_details = await scrapeRoyalCaribbean(cruise?.link)
+                    break;
+                case "CELEBRITY_CRUISES":
+                    cruise_details = await scrapeCelebrity(cruise?.link)
+                    break;
+                case "CARNIVAL":
+                    cruise_details = await scrapeCarnival(cruise?.link)
+                    break;
+                case "CUNARD":
+                    cruise_details = await scrapeCunard(cruise?.link)
+                    break;
+                case "PRINCESS_CRUISES":
+                    // pupeteer used
+                    cruise_details = await scrapePrincess(cruise?.link)
+                    break;
+                case "SEABOURN":
+                    cruise_details = {}
+                    break;
+                case "HOLLAND_AMERICA":
+                    cruise_details = {}
                     break;
 
                 default:

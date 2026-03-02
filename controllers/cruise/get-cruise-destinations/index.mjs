@@ -1,44 +1,53 @@
 import { cruiseModel } from "../../../models/index.mjs";
 import { errorMessages } from "../../../utils/errorMessages.mjs";
+import { escapeRegExp } from "../../../utils/functions.mjs";
 
-export const getCruiseDestinationsController = async (req, res, next) => {
+export const getCruiseDestinationsController = async (req, res) => {
     try {
         const { ship, origin } = req.query;
 
-        // build dynamic query
         const query = {};
+
+        // ✅ Case-insensitive ship search
         if (ship) {
-            // match if the ship array contains the string from frontend
-            query.ship = { $in: [ship] };
+            query.ship = {
+                $elemMatch: {
+                    $regex: new RegExp(`^${escapeRegExp(ship)}$`, "i")
+                }
+            };
         }
 
-        // only need titles
-        const cruises = await cruiseModel.find(
-            query,
-            { title: 1, _id: 0 }
-        );
+        // ✅ Case-insensitive origin filter
+        if (origin) {
+            query.title = {
+                $regex: new RegExp(
+                    `^${escapeRegExp(origin)}\\s+to\\s+`,
+                    "i"
+                )
+            };
+        }
 
+        // Only fetch title (performance optimization)
+        const cruises = await cruiseModel
+            .find(query, { title: 1, _id: 0 })
+            .lean();
+
+        // ✅ Unique + Uppercase Destinations
         const destinationsSet = new Set();
 
         cruises.forEach(c => {
             if (c.title && c.title.includes(" to ")) {
-                const [from, to] = c.title.split(" to ").map(s => s.trim());
+                const destination = c.title
+                    .split(" to ")[1]   // 👈 destination part
+                    .trim()
+                    .toUpperCase();
 
-                // if origin is given → match
-                if (origin) {
-                    if (from === origin) {
-                        destinationsSet.add(to);
-                    }
-                } else {
-                    // if no origin → add all destinations
-                    destinationsSet.add(to);
-                }
+                destinationsSet.add(destination);
             }
         });
 
-        const destinations = Array.from(destinationsSet).sort((a, b) =>
-            a.localeCompare(b)
-        );
+        const destinations = Array.from(destinationsSet)
+            .sort((a, b) => a.localeCompare(b));
 
         return res.send({
             message: "Cruise destinations fetched",

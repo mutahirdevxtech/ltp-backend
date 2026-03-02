@@ -65,10 +65,9 @@ export const postmarkEmailTmeplates = {
 export const cloudinaryProfilePicturesFolder = "luxe-travel-plans/profile-pictures"
 
 export const cruise_providers = [
-    "CRUISINGPOWER",
-    "GOCCL",
-    "MSCBOOK",
-
+    // "CRUISINGPOWER",
+    // "GOCCL",
+    // "MSCBOOK",
     "SILVERSEA",
     "AZAMARA",
     "NCL",
@@ -77,4 +76,12 @@ export const cruise_providers = [
     "RITZ_CARLTON_CRUISES",
     "VIKING_CRUISES",
     "VIRGIN_CRUISES",
+    "ROYAL_CARIBBEAN",
+    "CELEBRITY_CRUISES",
+    "CARNIVAL",
+    "PRINCESS_CRUISES",
+    "CUNARD",
+    "SEABOURN",
+    "HOLLAND_AMERICA",
+
 ]
