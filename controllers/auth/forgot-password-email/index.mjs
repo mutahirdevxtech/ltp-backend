@@ -235,6 +235,8 @@ export const forgotPasswordEmailCompleteController = async (req, res, next) => {
 
         const passwordHash = await bcrypt.hash(password, 12)
         user.password = passwordHash
+        user.isEmailVerified = true
+
         await user.save()
         res.send({ message: errorMessages.forgotPasswordEmailCompletedDone })
 
