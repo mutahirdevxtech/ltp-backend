@@ -15,7 +15,7 @@ export const getBulkUsersController = async (req, res, next) => {
             endJoiningDate,
             startUpdatingDate,
             endUpdatingDate,
-            page: skip = 0,
+            page = 1,
             limit = 10
         } = req?.query
 
@@ -52,27 +52,53 @@ export const getBulkUsersController = async (req, res, next) => {
             ]
         }
 
-        // 🔹 Pagination values
-        const parsedSkip = Math.max(0, parseInt(skip) || 0)
-        const parsedLimit = Math.max(1, parseInt(limit) || 10)
+        // // 🔹 Pagination values
+        // const parsedSkip = Math.max(0, parseInt(skip) || 0)
+        // const parsedLimit = Math.max(1, parseInt(limit) || 10)
+
+        // // 🔹 Total Count
+        // const totalUsers = await userModel.countDocuments(query)
+
+        // // 🔹 Data Fetch
+        // const users = await userModel.find(query)
+        //     .sort({ _id: -1 })
+        //     .skip(parsedSkip)
+        //     .limit(parsedLimit)
+        //     .select("-password -isDeleted -updatedAt -pushNotifications -is2faEnabled -__v")
+        //     .exec()
+
+        // 🔹 Pagination
+        const pageNumber = parseInt(page) > 0 ? parseInt(page) : 1
+        const limitNumber = parseInt(limit) > 0 ? parseInt(limit) : 10
+        const skip = (pageNumber - 1) * limitNumber
 
         // 🔹 Total Count
         const totalUsers = await userModel.countDocuments(query)
+        const totalPages = Math.max(Math.ceil(totalUsers / limitNumber), 1)
 
-        // 🔹 Data Fetch
+        // 🔹 Fetch Data
         const users = await userModel.find(query)
             .sort({ _id: -1 })
-            .skip(parsedSkip)
-            .limit(parsedLimit)
+            .skip(skip)
+            .limit(limitNumber)
             .select("-password -isDeleted -updatedAt -pushNotifications -is2faEnabled -__v")
             .exec()
 
         return res.send({
             message: "Users fetched successfully",
             data: {
+                // totalUsers,
+                // skip: parsedSkip,
+                // limit: parsedLimit,
+
                 totalUsers,
-                skip: parsedSkip,
-                limit: parsedLimit,
+                totalPages,
+                currentPage: pageNumber,
+                limit: limitNumber,
+                skip,
+                hasNextPage: pageNumber < totalPages,
+                hasPrevPage: pageNumber > 1,
+
                 users
             }
         })

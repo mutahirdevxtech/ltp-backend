@@ -12,7 +12,8 @@ export const getAllContactUs = async (req, res) => {
             endCreatedAt,
             startUpdatedAt,
             endUpdatedAt,
-            page: skip = 0,
+            // page: skip = 0,
+            page = 1,
             limit = 10,
         } = req.query;
 
@@ -55,22 +56,24 @@ export const getAllContactUs = async (req, res) => {
             ];
         }
 
-        const parsedSkip = parseInt(skip) || 0;
-        const parsedLimit = parseInt(limit) || 10;
+
+        const pageNumber = parseInt(page) > 0 ? parseInt(page) : 1;
+        const parsedLimit = parseInt(limit) > 0 ? parseInt(limit) : 10;
+        const skip = (pageNumber - 1) * parsedLimit;
 
         const [data, totalRecords] = await Promise.all([
             contactUsModel
                 .find(query)
                 .sort({ _id: -1 })
-                .skip(parsedSkip)
+                .skip(skip)
                 .limit(parsedLimit)
                 .lean()
                 .exec(),
             contactUsModel.countDocuments(query)
         ]);
 
-        const totalPages = Math.ceil(totalRecords / parsedLimit);
-        const currentPage = Math.floor(parsedSkip / parsedLimit) + 1;
+        const totalPages = Math.ceil(totalRecords / parsedLimit) || 1;
+        const currentPage = pageNumber;
 
         return res.send({
             message: "contact requests fetched successfully",
@@ -79,7 +82,7 @@ export const getAllContactUs = async (req, res) => {
                 totalPages,
                 currentPage,
                 limit: parsedLimit,
-                skip: parsedSkip,
+                skip: skip,
                 hasNextPage: currentPage < totalPages,
                 hasPrevPage: currentPage > 1
             },

@@ -19,10 +19,14 @@ export const getBookingsController = async (req, res) => {
             limit = 10
         } = req.query;
 
-        const pageNumber = parseInt(page);
-        const limitNumber = parseInt(limit);
+        // const pageNumber = parseInt(page);
+        // const limitNumber = parseInt(limit);
         // const skip = (pageNumber - 1) * limitNumber;
-        const skip = pageNumber - 1;
+        // const skip = pageNumber - 1;
+
+        const pageNumber = parseInt(page) > 0 ? parseInt(page) : 1;
+        const limitNumber = parseInt(limit) > 0 ? parseInt(limit) : 10;
+        const skip = (pageNumber - 1) * limitNumber;
 
         const query = { isDeleted: false };
 
@@ -131,12 +135,16 @@ export const getBookingsController = async (req, res) => {
         // ------------------------------
         // Final Response
         // ------------------------------
+        const totalPages = Math.max(Math.ceil(total / limitNumber), 1);
         return res.send({
             message: "bookings fetched successfully",
             total,
-            totalPages: Math.ceil(total / limitNumber),
+            // totalPages: Math.ceil(total / limitNumber),
+            totalPages: totalPages,
             currentPage: pageNumber,
             data: bookingsWithCruise,
+            hasNextPage: pageNumber < totalPages,
+            hasPrevPage: pageNumber > 1,
         });
 
     } catch (error) {
